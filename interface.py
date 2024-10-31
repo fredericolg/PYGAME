@@ -1,8 +1,10 @@
 # ===== Inicialização =====
 # ----- Importa e inicia pacotes
 import pygame
+import random
 
 pygame.init()
+pygame.mixer.init()
 
 # ----- Gera tela principal
 largura = 1200
@@ -16,7 +18,13 @@ imagem_goal = pygame.image.load("imagens\GOAL!.png").convert_alpha()
 #========= Texto
 
 
-# ----- Inicia estruturas de dados
+# ----- colocar as outras musicas e como trocar 
+lista_musica = ['audios/1.mp3', 'audios/2.mp3', 'audios/3.mp3', 'audios/4.mp3', 'audios/5.mp3']
+s = random.randint(0,4)
+variavelmusica = 0
+pygame.mixer.music.load(lista_musica[s])
+pygame.mixer.music.set_volume(0.2)
+
 game = True
 
 barra_carregamento = 0
@@ -74,6 +82,9 @@ while game:
 
     
     if tela_atual == 'Tela de início':
+        if variavelmusica == 0:
+            pygame.mixer.music.play(-1)
+            variavelmusica += 1
         # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências

@@ -13,6 +13,7 @@ window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Penalty shoot out')
 imagem_logo = pygame.image.load("imagens\logo_v2.png").convert_alpha()
 imagem_goal = pygame.image.load("imagens\GOAL!.png").convert_alpha()
+imagem_fundo = pygame.image.load("imagens\Tela.png").convert()
 
 
 #========= Texto
@@ -46,11 +47,14 @@ while game:
                 game = False
 
         # ----- Gera saídas
-        window.fill((0, 0, 0))  # Preenche com a cor branca
+
+        imagem_fundo = pygame.transform.scale(imagem_fundo, (1200, 600))
+        window.blit(imagem_fundo, (0, 0))
 
         if frames<=360:
             cor = (255, 255, 255)
             vertices = [(200, 450), (200, 480), (1000, 480), (1000, 450)]
+
             pygame.draw.polygon(window, cor, vertices, width=3)
 
             cor = (0, 255, 0)
@@ -67,7 +71,7 @@ while game:
 
             else:
                 font = pygame.font.SysFont(None, 48)
-                hora_do_gol = font.render('ESTÁ NA HORA DE FAZER GOL!!!', False, (255, 255, 255))
+                hora_do_gol = font.render('ESTÁ NA HORA DE FAZER GOL!!!', False, (0, 0, 0))
                 window.blit(hora_do_gol, (330, 490))
 
 
@@ -83,7 +87,7 @@ while game:
     
     if tela_atual == 'Tela de início':
         if variavelmusica == 0:
-            pygame.mixer.music.play(-1)
+            pygame.mixer.music.play(-1, 2)
             variavelmusica += 1
         # ----- Trata eventos
         for event in pygame.event.get():

@@ -21,7 +21,14 @@ imagem_config = pygame.image.load("imagens\Botao config2.png").convert_alpha()
 imagem_config_mouse = pygame.image.load("imagens\Botao config cor.png").convert_alpha()
 imagem_seta = pygame.image.load("imagens/seta volta.png").convert_alpha()
 imagem_seta_mouse = pygame.image.load("imagens/seta volta cor.png").convert_alpha()
-imagem_menu_config = pygame.image.load("imagens/menu config2.png").convert()
+imagem_menu_config = pygame.image.load("imagens/menu config2.png").convert_alpha()
+botao_play_music = pygame.image.load("imagens/botao play music.png").convert()
+botao_pause_music = pygame.image.load("imagens/botao pause music.png").convert()
+botao_mute_music = pygame.image.load("imagens/botao mute music.png").convert()
+botao_desmute_music = pygame.image.load("imagens/botao desmute music.png").convert()
+botao_next_music = pygame.image.load("imagens/botao next music.png").convert()
+botao_previous_music = pygame.image.load("imagens/botao previous music.png").convert()
+botao_pix = pygame.image.load("imagens/botao faz o pix.png").convert()
 
 #========= Texto
 
@@ -34,10 +41,11 @@ pygame.mixer.music.load(lista_musica[s])
 pygame.mixer.music.set_volume(0.2)
 
 game = True
-
+# === tempo de primeira tela (tela de carregamento)
 barra_carregamento = 0
 frames=0
 tela_atual='Tela de carregamento'
+
 # === variavel para ajuste de tempo da tela
 clock = pygame.time.Clock()
 FPS = 60
@@ -47,6 +55,9 @@ FPS = 60
 while game:
     frames+=1
     clock.tick(FPS)
+
+    # === TELA DE CARREGAMENTO
+
     if tela_atual == 'Tela de carregamento':
         # ----- Trata eventos
         for event in pygame.event.get():
@@ -59,7 +70,9 @@ while game:
         imagem_fundo = pygame.transform.scale(imagem_fundo, (1200, 600))
         window.blit(imagem_fundo, (0, 0))
 
+        # ==== fica 6 segundos na tela de carregamento
         if frames<=360:
+            # cria a barra de carregamento
             cor = (0, 0, 0)
             vertices = [(200, 450), (200, 480), (1000, 480), (1000, 450)]
 
@@ -73,6 +86,8 @@ while game:
             vertices = [(203, 453), (203, 477), (203 + barra_carregamento, 477), (203 + barra_carregamento, 453)]
 
             pygame.draw.polygon(window, cor, vertices)
+
+            # imprime o logo no tela
             imagem_logo = pygame.transform.scale(imagem_logo, (400, 400))
             imagem_logo_rect=imagem_logo.get_rect()
             imagem_logo_rect.center=((largura/2),(altura/2)-50)
@@ -86,24 +101,21 @@ while game:
                 hora_do_gol = font.render('ESTÁ NA HORA DE FAZER GOL!!!', False, (0, 0, 0))
                 window.blit(hora_do_gol, (330, 490))
 
-
-
-
-        # ======= colocar a imagem do logo do jogo na tela de carregamento
-
-
-        
         else:
             tela_atual = 'Tela de início'
 
     
+    # TELA DE INÍCIO
+
     if tela_atual == 'Tela de início':
         window.blit(imagem_fundo, (0, 0))
 
+        # toca a musica
         if variavelmusica == 0:
             pygame.mixer.music.play(-1)
             variavelmusica += 1
 
+        # === Cria retangulo para a placa "PLAY" e "CONFIG" mudarem de cor com o mouse
         cor = (255, 255, 255)
         vertices = [(525, 330), (525, 395), (690, 395), (690, 330)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices, width = 1)
@@ -112,11 +124,13 @@ while game:
         vertices = [(550, 450), (550, 550), (670, 550), (670, 450)]
         retangulo_colisao2 = pygame.draw.polygon(window, cor, vertices, width = 1)
 
+        # coloca o escrito "PENALTY SHOOT OUT" na tela
         imagem_escrito = pygame.transform.scale(imagem_escrito, (500, 500))
         imagem_escrito_rect=imagem_escrito.get_rect()
         imagem_escrito_rect.center=((largura/2),(altura/2)-150)
         window.blit(imagem_escrito, (imagem_escrito_rect))
 
+        # === Muda a cor das placas quando o mouse passa por cima
         mouse_pos = pygame.mouse.get_pos()
         if retangulo_colisao.collidepoint(mouse_pos):
             imagem_play_mouse = pygame.transform.scale(imagem_play_mouse, (345, 485))
@@ -147,11 +161,14 @@ while game:
                 game = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button==1:
-                    mouse_pos=event.pos
+                    mouse_pos=event.pos # ao clicar com o botao esquerdo, muda de tela
                     if retangulo_colisao.collidepoint(mouse_pos):
                         tela_atual = "Tela play"
                     if retangulo_colisao2.collidepoint(mouse_pos):
                         tela_atual = "Tela config"
+
+
+    # === TELA CONFIGURAÇÃO
     
     if tela_atual == "Tela config":
         cor = (0, 0, 0)
@@ -161,18 +178,18 @@ while game:
         imagem_fundo_pix = pygame.transform.scale(imagem_fundo_pix, (largura, altura))
         window.blit(imagem_fundo_pix, (0, 0))
 
-        imagem_menu_config = pygame.transform.scale(imagem_menu_config, (400, 400))
-        imagem_menu_config_rect=imagem_menu_config.get_rect()
-        imagem_logo_rect.center=((largura/2),(altura/2))
-        window.blit(imagem_menu_config, (imagem_menu_config_rect))
+        # imagem_menu_config = pygame.transform.scale(imagem_menu_config, (600, 600))
+        # imagem_menu_config_rect=imagem_menu_config.get_rect()
+        # imagem_menu_config_rect.center=((largura/2),(altura/2))
+        # window.blit(imagem_menu_config, (imagem_menu_config_rect))
 
-        
+        cor = (173, 216, 230)
+        largura_r = (200)
+        altura_r = (600)
+        tamanho = (largura_r, altura_r)
+        posicao = (1/4 * largura, 1/4 * altura)
+        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
 
-        # === retangulo do menu config
-        #cor = (173, 216, 230)
-        #posicao = (400, 150)  # Posição (x, y) do canto superior esquerdo
-        #tamanho = (200, 150) # tamanho do retangulo
-        #pygame.draw.rect(window, cor, (posicao, tamanho))
 
         mouse_pos = pygame.mouse.get_pos()
         if retangulo_colisao.collidepoint(mouse_pos):

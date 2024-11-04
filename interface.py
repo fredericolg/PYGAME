@@ -185,16 +185,34 @@ while game:
         imagem_fundo_pix = pygame.transform.scale(imagem_fundo_pix, (largura, altura))
         window.blit(imagem_fundo_pix, (0, 0))
 
-        # imagem_menu_config = pygame.transform.scale(imagem_menu_config, (600, 600))
-        # imagem_menu_config_rect=imagem_menu_config.get_rect()
-        # imagem_menu_config_rect.center=((largura/2),(altura/2))
-        # window.blit(imagem_menu_config, (imagem_menu_config_rect))
-
-        cor = (173, 216, 230)
-        largura_r = (200)
-        altura_r = (600)
+        # === Retangulo do menu
+            # Retangulo preto (contorno)
+        cor = (0, 0, 0)
+        largura_r = (636)
+        altura_r = (436)
         tamanho = (largura_r, altura_r)
-        posicao = (1/4 * largura, 1/4 * altura)
+        posicao = (1/4 * largura - 18, 1/5 * altura - 18)
+        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
+            # Retangulo laranja
+        cor = (255, 100, 0)
+        largura_r = (630)
+        altura_r = (430)
+        tamanho = (largura_r, altura_r)
+        posicao = (1/4 * largura - 15, 1/5 * altura - 15)
+        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
+            # Retangulo azul marinho
+        cor = (60, 72, 92)
+        largura_r = (610)
+        altura_r = (410)
+        tamanho = (largura_r, altura_r)
+        posicao = (1/4 * largura - 5, 1/5 * altura - 5)
+        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
+            # Retangulo azul claro
+        cor = (173, 216, 230)
+        largura_r = (600)
+        altura_r = (400)
+        tamanho = (largura_r, altura_r)
+        posicao = (1/4 * largura, 1/5 * altura)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
 
 

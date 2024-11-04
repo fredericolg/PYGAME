@@ -139,8 +139,6 @@ while game:
             imagem_config_rect=imagem_config.get_rect()
             imagem_config_rect.center=((largura/2)+10,(altura/2 + 200))
             window.blit(imagem_config, (imagem_config_rect))
-        
-        print(mouse_pos)
 
         
             

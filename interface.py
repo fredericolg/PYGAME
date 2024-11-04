@@ -21,6 +21,7 @@ imagem_config = pygame.image.load("imagens\Botao config2.png").convert_alpha()
 imagem_config_mouse = pygame.image.load("imagens\Botao config cor.png").convert_alpha()
 imagem_seta = pygame.image.load("imagens/seta volta.png").convert_alpha()
 imagem_seta_mouse = pygame.image.load("imagens/seta volta cor.png").convert_alpha()
+imagem_menu_config = pygame.image.load("imagens/menu config2.png").convert()
 
 #========= Texto
 
@@ -100,7 +101,7 @@ while game:
         window.blit(imagem_fundo, (0, 0))
 
         if variavelmusica == 0:
-            pygame.mixer.music.play(-1, 2)
+            pygame.mixer.music.play(-1)
             variavelmusica += 1
 
         cor = (255, 255, 255)
@@ -159,6 +160,19 @@ while game:
 
         imagem_fundo_pix = pygame.transform.scale(imagem_fundo_pix, (largura, altura))
         window.blit(imagem_fundo_pix, (0, 0))
+
+        imagem_menu_config = pygame.transform.scale(imagem_menu_config, (400, 400))
+        imagem_menu_config_rect=imagem_menu_config.get_rect()
+        imagem_logo_rect.center=((largura/2),(altura/2))
+        window.blit(imagem_menu_config, (imagem_menu_config_rect))
+
+        
+
+        # === retangulo do menu config
+        #cor = (173, 216, 230)
+        #posicao = (400, 150)  # Posição (x, y) do canto superior esquerdo
+        #tamanho = (200, 150) # tamanho do retangulo
+        #pygame.draw.rect(window, cor, (posicao, tamanho))
 
         mouse_pos = pygame.mouse.get_pos()
         if retangulo_colisao.collidepoint(mouse_pos):

@@ -12,7 +12,6 @@ altura = 600
 window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Penalty shoot out')
 imagem_logo = pygame.image.load("imagens\logo2.png").convert_alpha()
-imagem_goal = pygame.image.load("imagens\GOAL!.png").convert_alpha()
 imagem_fundo = pygame.image.load("imagens\Tela.png").convert()
 imagem_play = pygame.image.load("imagens\imagem_play.png").convert_alpha()
 imagem_escrito = pygame.image.load("imagens\escrito.png").convert_alpha()

@@ -13,6 +13,7 @@ window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Penalty shoot out')
 imagem_logo = pygame.image.load("imagens\logo2.png").convert_alpha()
 imagem_fundo = pygame.image.load("imagens\Tela.png").convert()
+imagem_fundo_pix = pygame.image.load("imagens/Tela pixelada.jpg").convert()
 imagem_play = pygame.image.load("imagens\imagem_play.png").convert_alpha()
 imagem_escrito = pygame.image.load("imagens\escrito.png").convert_alpha()
 imagem_play_mouse = pygame.image.load("imagens\play_cor.png").convert_alpha()
@@ -156,7 +157,8 @@ while game:
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
 
-        window.blit(imagem_fundo, (0, 0))
+        imagem_fundo_pix = pygame.transform.scale(imagem_fundo_pix, (largura, altura))
+        window.blit(imagem_fundo_pix, (0, 0))
 
         mouse_pos = pygame.mouse.get_pos()
         if retangulo_colisao.collidepoint(mouse_pos):

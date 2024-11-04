@@ -18,6 +18,8 @@ imagem_escrito = pygame.image.load("imagens\escrito.png").convert_alpha()
 imagem_play_mouse = pygame.image.load("imagens\play_cor.png").convert_alpha()
 imagem_config = pygame.image.load("imagens\Botao config2.png").convert_alpha()
 imagem_config_mouse = pygame.image.load("imagens\Botao config cor.png").convert_alpha()
+imagem_seta = pygame.image.load("imagens/seta volta.png").convert_alpha()
+imagem_seta_mouse = pygame.image.load("imagens/seta volta cor.png").convert_alpha()
 
 #========= Texto
 
@@ -37,6 +39,7 @@ tela_atual='Tela de carregamento'
 # === variavel para ajuste de tempo da tela
 clock = pygame.time.Clock()
 FPS = 60
+
 
 # ===== Loop principal =====
 while game:
@@ -93,14 +96,11 @@ while game:
 
     
     if tela_atual == 'Tela de início':
+        window.blit(imagem_fundo, (0, 0))
+
         if variavelmusica == 0:
             pygame.mixer.music.play(-1, 2)
             variavelmusica += 1
-        # ----- Trata eventos
-        for event in pygame.event.get():
-            # ----- Verifica consequências
-            if event.type == pygame.QUIT:
-                game = False
 
         cor = (255, 255, 255)
         vertices = [(525, 330), (525, 395), (690, 395), (690, 330)]
@@ -114,7 +114,6 @@ while game:
         imagem_escrito_rect=imagem_escrito.get_rect()
         imagem_escrito_rect.center=((largura/2),(altura/2)-150)
         window.blit(imagem_escrito, (imagem_escrito_rect))
-
 
         mouse_pos = pygame.mouse.get_pos()
         if retangulo_colisao.collidepoint(mouse_pos):
@@ -138,6 +137,66 @@ while game:
             imagem_config_rect=imagem_config.get_rect()
             imagem_config_rect.center=((largura/2)+10,(altura/2 + 200))
             window.blit(imagem_config, (imagem_config_rect))
+
+        # ----- Trata eventos
+        for event in pygame.event.get():
+            # ----- Verifica consequências
+            if event.type == pygame.QUIT:
+                game = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button==1:
+                    mouse_pos=event.pos
+                    if retangulo_colisao.collidepoint(mouse_pos):
+                        tela_atual = "Tela play"
+                    if retangulo_colisao2.collidepoint(mouse_pos):
+                        tela_atual = "Tela config"
+    
+    if tela_atual == "Tela config":
+        cor = (0, 0, 0)
+        vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
+        retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
+
+        window.blit(imagem_fundo, (0, 0))
+
+        mouse_pos = pygame.mouse.get_pos()
+        if retangulo_colisao.collidepoint(mouse_pos):
+            imagem_seta_mouse = pygame.transform.scale(imagem_seta_mouse, (65, 65))
+            window.blit(imagem_seta_mouse, (0, 0))
+        else:
+            imagem_seta = pygame.transform.scale(imagem_seta, (65, 65))
+            window.blit(imagem_seta, (0, 0))
+
+        for event in pygame.event.get():
+            # ----- Verifica consequências
+            if event.type == pygame.QUIT:
+                game = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if retangulo_colisao.collidepoint(mouse_pos):
+                    tela_atual = "Tela de início"
+
+
+    if tela_atual == "Tela play":
+        cor = (0, 0, 0)
+        vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
+        retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
+
+        window.blit(imagem_fundo, (0, 0))
+
+        mouse_pos = pygame.mouse.get_pos()
+        if retangulo_colisao.collidepoint(mouse_pos):
+            imagem_seta_mouse = pygame.transform.scale(imagem_seta_mouse, (65, 65))
+            window.blit(imagem_seta_mouse, (0, 0))
+        else:
+            imagem_seta = pygame.transform.scale(imagem_seta, (65, 65))
+            window.blit(imagem_seta, (0, 0))
+
+        for event in pygame.event.get():
+            # ----- Verifica consequências
+            if event.type == pygame.QUIT:
+                game = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if retangulo_colisao.collidepoint(mouse_pos):
+                    tela_atual = "Tela de início"
 
         
             

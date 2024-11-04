@@ -33,18 +33,17 @@ botao_pix = pygame.image.load("imagens/botao faz o pix.png").convert()
 #========= Texto
 
 
-# ----- colocar as outras musicas e como trocar 
-lista_musica = ['audios/1.mp3', 'audios/2.mp3', 'audios/3.mp3', 'audios/4.mp3', 'audios/5.mp3']
-s = random.randint(0,4)
-variavelmusica = 0
-pygame.mixer.music.load(lista_musica[s])
-pygame.mixer.music.set_volume(0.2)
-
 game = True
 # === tempo de primeira tela (tela de carregamento)
 barra_carregamento = 0
 frames=0
 tela_atual='Tela de carregamento'
+
+# ================= Cria uma lista com as músicas para depois tocar ============= #
+lista_musica = ['audios/1.mp3', 'audios/2.mp3', 'audios/3.mp3', 'audios/4.mp3', 'audios/5.mp3']
+variavelmusica = 0
+MUSIC_END = pygame.USEREVENT+1
+pygame.mixer.music.set_endevent(MUSIC_END)
 
 # === variavel para ajuste de tempo da tela
 clock = pygame.time.Clock()
@@ -110,10 +109,18 @@ while game:
     if tela_atual == 'Tela de início':
         window.blit(imagem_fundo, (0, 0))
 
-        # toca a musica
-        if variavelmusica == 0:
-            pygame.mixer.music.play(-1)
-            variavelmusica += 1
+        # ============== Músicas ================= #
+        if not pygame.mixer.music.get_busy():       
+            pygame.mixer.music.load(lista_musica[variavelmusica])
+            pygame.mixer.music.set_volume(0.2)
+            if variavelmusica == 1:
+                pygame.mixer.music.play(0, start=11)
+                variavelmusica += 1
+            if variavelmusica != 1:
+                pygame.mixer.music.play(0, start=0.1)
+                variavelmusica += 1
+            if variavelmusica == 4:
+                variavelmusica = 0
 
         # === Cria retangulo para a placa "PLAY" e "CONFIG" mudarem de cor com o mouse
         cor = (255, 255, 255)

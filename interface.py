@@ -22,13 +22,13 @@ imagem_config_mouse = pygame.image.load("imagens\Botao config cor.png").convert_
 imagem_seta = pygame.image.load("imagens/seta volta.png").convert_alpha()
 imagem_seta_mouse = pygame.image.load("imagens/seta volta cor.png").convert_alpha()
 imagem_menu_config = pygame.image.load("imagens/menu config2.png").convert_alpha()
-botao_play_music = pygame.image.load("imagens/botao play music.png").convert()
-botao_pause_music = pygame.image.load("imagens/botao pause music.png").convert()
-botao_mute_music = pygame.image.load("imagens/botao mute music.png").convert()
-botao_desmute_music = pygame.image.load("imagens/botao desmute music.png").convert()
-botao_next_music = pygame.image.load("imagens/botao next music.png").convert()
-botao_previous_music = pygame.image.load("imagens/botao previous music.png").convert()
-botao_pix = pygame.image.load("imagens/botao faz o pix.png").convert()
+botao_play_music = pygame.image.load("imagens/botao play music.png").convert_alpha()
+botao_pause_music = pygame.image.load("imagens/botao pause music.png").convert_alpha()
+botao_mute_music = pygame.image.load("imagens/botao mute music.png").convert_alpha()
+botao_desmute_music = pygame.image.load("imagens/botao desmute music.png").convert_alpha()
+botao_next_music = pygame.image.load("imagens/botao next music.png").convert_alpha()
+botao_previous_music = pygame.image.load("imagens/botao previous music.png").convert_alpha()
+botao_pix = pygame.image.load("imagens/botao faz o pix.png").convert_alpha()
 
 #========= Texto
 
@@ -41,6 +41,15 @@ tela_atual='Tela de carregamento'
 
 # ================= Cria uma lista com as músicas para depois tocar ============= #
 lista_musica = ['audios/1.mp3', 'audios/2.mp3', 'audios/3.mp3', 'audios/4.mp3', 'audios/5.mp3']
+dicio_musica = {
+
+    "nome1":'audios/1.mp3',
+    "nome2":'audios/2.mp3',
+    "nome3":'audios/3.mp3',
+    "nome4":'audios/4.mp3',
+    "nome5":'audios/5.mp3'
+
+}
 variavelmusica = 0
 MUSIC_END = pygame.USEREVENT+1
 pygame.mixer.music.set_endevent(MUSIC_END)
@@ -214,6 +223,32 @@ while game:
         tamanho = (largura_r, altura_r)
         posicao = (1/4 * largura, 1/5 * altura)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
+
+
+        # === Botoes musica
+            # botao pause
+        botao_pause_music = pygame.transform.scale(botao_pause_music, (50, 50))
+        botao_pause_music_rect=botao_pause_music.get_rect()
+        botao_pause_music_rect.center = ((largura * 1/2), (altura * 1/2))
+        window.blit(botao_pause_music, (botao_pause_music_rect))
+            # botao next
+        botao_next_music = pygame.transform.scale(botao_next_music, (50, 50))
+        botao_next_music_rect=botao_next_music.get_rect()
+        botao_next_music_rect.center = ((largura * 1/2) + 65, (altura * 1/2) + 5)
+        window.blit(botao_next_music, (botao_next_music_rect))
+            # botao previous
+        botao_previous_music = pygame.transform.scale(botao_previous_music, (50, 50))
+        botao_previous_music_rect=botao_previous_music.get_rect()
+        botao_previous_music_rect.center = ((largura * 1/2) - 65, (altura * 1/2) + 5)
+        window.blit(botao_previous_music, (botao_previous_music_rect))
+        
+
+
+        for nome, musica in dicio_musica.items():
+            if lista_musica[variavelmusica] == musica:
+                font = pygame.font.SysFont(None, 46)
+                nome_musica = font.render(nome, False, (0, 0, 0))
+                window.blit(nome_musica, (550, 250))
 
 
         mouse_pos = pygame.mouse.get_pos()

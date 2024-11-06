@@ -29,6 +29,10 @@ botao_desmute_music = pygame.image.load("imagens/botao desmute music.png").conve
 botao_next_music = pygame.image.load("imagens/botao next music.png").convert_alpha()
 botao_previous_music = pygame.image.load("imagens/botao previous music.png").convert_alpha()
 botao_pix = pygame.image.load("imagens/botao faz o pix.png").convert_alpha()
+logo_sp = pygame.image.load("imagens/logo sao paulo.png").convert_alpha()
+logo_flu = pygame.image.load("imagens/logo fluminense png.png").convert_alpha()
+logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha()
+logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
 
 #========= Texto
 
@@ -38,6 +42,17 @@ game = True
 barra_carregamento = 0
 frames=0
 tela_atual='Tela de carregamento'
+
+# === imagem times de futebol
+lista_times = [logo_sp, logo_flu, logo_borussia, logo_inter]
+dicio_times = {
+
+    "São Paulo FC":lista_times[0], 
+    "Fluminense":lista_times[1],
+    "Borussia":lista_times[2],
+    "Inter Miami":lista_times[3]
+
+    }
 
 # ================= Cria uma lista com as músicas para depois tocar ============= #
 lista_musica = ['audios/1.mp3', 'audios/2.mp3', 'audios/3.mp3', 'audios/4.mp3', 'audios/5.mp3']
@@ -269,6 +284,9 @@ while game:
 
 
     if tela_atual == "Tela play":
+
+        # SETA PARA VOLTAR PRO MENU
+
         cor = (0, 0, 0)
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
@@ -282,6 +300,48 @@ while game:
         else:
             imagem_seta = pygame.transform.scale(imagem_seta, (65, 65))
             window.blit(imagem_seta, (0, 0))
+
+
+            # Retangulo preto (contorno)
+        largura_r = 836
+        altura_r = 506
+
+        cor = (0, 0, 0)
+        largura_r = (largura_r)
+        altura_r = (altura_r)
+        tamanho = (largura_r, altura_r)
+        posicao = (1/6 * largura - 18, 1/7 * altura - 18)
+        pygame.draw.rect(window, cor, (posicao, tamanho))
+            # Retangulo laranja
+        cor = (255, 100, 0)
+        largura_r = (largura_r - 6)
+        altura_r = (altura_r - 6)
+        tamanho = (largura_r, altura_r)
+        posicao = (1/6 * largura - 15, 1/7 * altura - 15)
+        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
+            # Retangulo azul marinho
+        cor = (60, 72, 92)
+        largura_r = (largura_r - 20)
+        altura_r = (altura_r - 20)
+        tamanho = (largura_r, altura_r)
+        posicao = (1/6 * largura - 5, 1/7 * altura - 5)
+        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
+            # Retangulo azul claro
+        cor = (173, 216, 230)
+        largura_r = (largura_r - 10)
+        altura_r = (altura_r - 10)
+        tamanho = (largura_r, altura_r)
+        posicao = (1/6 * largura, 1/7 * altura)
+        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
+
+        # === Colocar e escolha dos times
+        
+        i = 0
+        time = pygame.transform.scale(lista_times[i], (500, 282))
+        time_rect=time.get_rect()
+        time_rect.center = ((largura * 1/2), (altura * 1/2))
+        window.blit(time, (time_rect))
+
 
         for event in pygame.event.get():
             # ----- Verifica consequências

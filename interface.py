@@ -65,7 +65,7 @@ dicio_musica = {
     "nome5":'audios/5.mp3'
 
 }
-variavelmusica = 0
+variavelmusica = random.randint(0,4) 
 MUSIC_END = pygame.USEREVENT+1
 pygame.mixer.music.set_endevent(MUSIC_END)
 

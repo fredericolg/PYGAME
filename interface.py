@@ -21,6 +21,8 @@ imagem_config = pygame.image.load("imagens\Botao config2.png").convert_alpha()
 imagem_config_mouse = pygame.image.load("imagens\Botao config cor.png").convert_alpha()
 imagem_seta = pygame.image.load("imagens/seta volta.png").convert_alpha()
 imagem_seta_mouse = pygame.image.load("imagens/seta volta cor.png").convert_alpha()
+imagem_seta_prox = pygame.image.load("imagens/seta prox.png").convert_alpha()
+imagem_seta_prox_cor = pygame.image.load("imagens/seta prox cor.png").convert_alpha()
 imagem_menu_config = pygame.image.load("imagens/menu config2.png").convert_alpha()
 botao_play_music = pygame.image.load("imagens/botao play music.png").convert_alpha()
 botao_pause_music = pygame.image.load("imagens/botao pause music.png").convert_alpha()
@@ -44,6 +46,7 @@ frames=0
 tela_atual='Tela de carregamento'
 
 # === imagem times de futebol
+i = 0
 lista_times = [logo_sp, logo_flu, logo_borussia, logo_inter]
 dicio_times = {
 
@@ -284,9 +287,25 @@ while game:
 
 
     if tela_atual == "Tela play":
-
-        # SETA PARA VOLTAR PRO MENU
-
+        
+        for event in pygame.event.get():
+            # ----- Verifica consequências
+            if event.type == pygame.QUIT:
+                game = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if retangulo_colisao.collidepoint(mouse_pos):
+                    tela_atual = "Tela de início"
+                if retangulo_colisao_prox.collidepoint(mouse_pos):
+                    if i < 3:
+                        i += 1
+                    else:
+                        i = 0
+                if retangulo_colisao_ant.collidepoint(mouse_pos):
+                    if i > 0:
+                        i -= 1
+                    else:
+                        i = 3
+        
         cor = (0, 0, 0)
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
@@ -298,8 +317,8 @@ while game:
             imagem_seta_mouse = pygame.transform.scale(imagem_seta_mouse, (65, 65))
             window.blit(imagem_seta_mouse, (0, 0))
         else:
-            imagem_seta = pygame.transform.scale(imagem_seta, (65, 65))
-            window.blit(imagem_seta, (0, 0))
+            imagem_seta_1 = pygame.transform.scale(imagem_seta, (65, 65))
+            window.blit(imagem_seta_1, (0, 0))
 
 
             # Retangulo preto (contorno)
@@ -336,26 +355,35 @@ while game:
 
         # === Colocar e escolha dos times
         
-        i = 0
         time = pygame.transform.scale(lista_times[i], (500, 282))
         time_rect=time.get_rect()
         time_rect.center = ((largura * 1/2), (altura * 1/2))
         window.blit(time, (time_rect))
 
+        # Passar para o próximo time
 
-        for event in pygame.event.get():
-            # ----- Verifica consequências
-            if event.type == pygame.QUIT:
-                game = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if retangulo_colisao.collidepoint(mouse_pos):
-                    tela_atual = "Tela de início"
+        cor = (0, 0, 0)
+        retangulo_colisao_prox = pygame.draw.rect(window, cor, (730, 360, 75, 40))
+        #print(mouse_pos)
+
+        if retangulo_colisao_prox.collidepoint(mouse_pos):
+            imagem_seta_prox_cor = pygame.transform.scale(imagem_seta_prox_cor, (150, 150))
+            window.blit(imagem_seta_prox_cor, (700, 300))
+        else:
+            imagem_seta_prox = pygame.transform.scale(imagem_seta_prox, (150, 150))
+            window.blit(imagem_seta_prox, (700, 300))
+
+        # Voltar o time
+
+        retangulo_colisao_ant = pygame.draw.rect(window, cor, (395, 360, 75, 40))
+        if retangulo_colisao_ant.collidepoint(mouse_pos):
+            imagem_seta_mouse = pygame.transform.scale(imagem_seta_mouse, (150, 150))
+            window.blit(imagem_seta_mouse, (350, 298))
+        else:
+            imagem_seta_2 = pygame.transform.scale(imagem_seta, (150, 150))
+            window.blit(imagem_seta_2, (350, 300))
 
         
-            
-
-
-
     # ----- Atualiza estado do jogo
     pygame.display.update()  # Mostra o novo frame para o jogador
 

@@ -31,10 +31,13 @@ botao_desmute_music = pygame.image.load("imagens/botao desmute music.png").conve
 botao_next_music = pygame.image.load("imagens/botao next music.png").convert_alpha()
 botao_previous_music = pygame.image.load("imagens/botao previous music.png").convert_alpha()
 botao_pix = pygame.image.load("imagens/botao faz o pix.png").convert_alpha()
+botao_confirma = pygame.image.load("imagens/botao confirma.png").convert_alpha()
+botao_confirma_cor = pygame.image.load("imagens/botao confirma cor.png").convert_alpha()
 logo_sp = pygame.image.load("imagens/logo sao paulo.png").convert_alpha()
 logo_flu = pygame.image.load("imagens/logo fluminense png.png").convert_alpha()
 logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha()
 logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
+
 
 #========= Texto
 
@@ -47,6 +50,8 @@ tela_atual='Tela de carregamento'
 
 # === imagem times de futebol
 i = 0
+# logo_inter = pygame.transform.scale(logo_inter, (10, 10))
+# logo_borussia = pygame.transform.scale(logo_borussia, (10, 10))
 lista_times = [logo_sp, logo_flu, logo_borussia, logo_inter]
 dicio_times = {
 
@@ -305,6 +310,8 @@ while game:
                         i -= 1
                     else:
                         i = 3
+                if botao_confirma_rect.collidepoint(mouse_pos):
+                    tela_atual = "Disputa"
         
         cor = (0, 0, 0)
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
@@ -382,6 +389,35 @@ while game:
         else:
             imagem_seta_2 = pygame.transform.scale(imagem_seta, (150, 150))
             window.blit(imagem_seta_2, (350, 300))
+
+        # Confirma o time
+            # cria o botão de confirmar
+        botao_confirma = pygame.transform.scale(botao_confirma, (200, 200))
+        botao_confirma_rect = botao_confirma.get_rect()
+        botao_confirma_rect.center = ((600, 500))
+        window.blit(botao_confirma, (botao_confirma_rect))
+        
+        if botao_confirma_rect.collidepoint(mouse_pos):
+            botao_confirma_cor = pygame.transform.scale(botao_confirma_cor, (200, 200))
+            botao_confirma_cor_rect = botao_confirma_cor.get_rect()
+            botao_confirma_cor_rect.center = ((600, 500))
+            window.blit(botao_confirma_cor, (botao_confirma_cor_rect))
+        else:
+            botao_confirma = pygame.transform.scale(botao_confirma, (200, 200))
+            botao_confirma_rect = botao_confirma.get_rect()
+            botao_confirma_rect.center = ((600, 500))
+            window.blit(botao_confirma, (botao_confirma_rect))
+        
+        time_atual = time[i]
+
+    if tela_atual == "Disputa":
+
+        for event in pygame.event.get():
+            # ----- Verifica consequências
+            if event.type == pygame.QUIT:
+                game = False
+
+
 
         
     # ----- Atualiza estado do jogo

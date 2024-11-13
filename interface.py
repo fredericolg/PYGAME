@@ -37,6 +37,7 @@ logo_sp = pygame.image.load("imagens/logo sao paulo.png").convert_alpha()
 logo_flu = pygame.image.load("imagens/logo fluminense png.png").convert_alpha()
 logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha()
 logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
+imagem_gol = pygame.image.load("imagens/tela fundo gol.jpeg").convert_alpha()
 
 
 #========= Texto
@@ -74,6 +75,9 @@ dicio_musica = {
 variavelmusica = random.randint(0,4) 
 MUSIC_END = pygame.USEREVENT+1
 pygame.mixer.music.set_endevent(MUSIC_END)
+
+# === variavel para posição do goleiro
+pos_gol = random.randint(1,5)
 
 # === variavel para ajuste de tempo da tela
 clock = pygame.time.Clock()
@@ -411,12 +415,77 @@ while game:
         time_atual = lista_times[i]
 
     if tela_atual == "Disputa":
+        fundo_gol = pygame.transform.scale(imagem_gol, (1200,600))
+        window.blit(fundo_gol,(0, 0))
+        pos_mouse = pygame.mouse.get_pos()
+
+        larg = 170
+        alt = 106
+        cor = (0,0,255)
+
+        x_1 = 340
+        y_1 = 170
+        canto_1 = pygame.Rect(x_1, y_1, larg, alt)
+
+        x_2 = 690
+        y_2 = 170
+        canto_2 = pygame.Rect(x_2, y_2, larg, alt)
+
+        x_3 = 340
+        y_3 = 382
+        canto_3 = pygame.Rect(x_3, y_3, larg, alt)
+
+        x_4 = 690
+        y_4 = 382
+        canto_4 = pygame.Rect(x_4, y_4, larg, alt)
+
+        x_5 = 510
+        y_5 = 276
+        larg_5 = 180
+        canto_5 = pygame.Rect(x_5, y_5, larg_5, alt)
+        gol = False
 
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 game = False
-
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if canto_1.collidepoint(pos_mouse):
+                    if pos_gol != 1:
+                        gol = True
+                        
+                        print(1)
+                    else:
+                        gol = False
+                        print(0)
+                if canto_2.collidepoint(pos_mouse):
+                    if pos_gol != 2:
+                        gol = True
+                        print(1)
+                    else:
+                        gol = False
+                        print(0)
+                if canto_3.collidepoint(pos_mouse):
+                    if pos_gol != 3:
+                        gol = True
+                        print(1)
+                    else:
+                        gol = False
+                        print(0)
+                if canto_4.collidepoint(pos_mouse):
+                    if pos_gol != 4:
+                        gol = True
+                        print(1)
+                    else:
+                        gol = False
+                        print(0)
+                if canto_5.collidepoint(pos_mouse):
+                    if pos_gol != 5:
+                        gol = True
+                        print(1)
+                    else:
+                        gol = False
+                        print(0)
 
 
         

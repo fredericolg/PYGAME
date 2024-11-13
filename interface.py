@@ -37,7 +37,6 @@ logo_sp = pygame.image.load("imagens/logo sao paulo.png").convert_alpha()
 logo_flu = pygame.image.load("imagens/logo fluminense png.png").convert_alpha()
 logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha()
 logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
-fonte = pygame.image.load("fonte/Minecraft.ttf").convert
 
 
 #========= Texto
@@ -127,7 +126,7 @@ while game:
                 barra_carregamento += 3
 
             else:
-                font = pygame.font.SysFont(fonte, 48)
+                font = pygame.font.SysFont("fonte/Minecraft.ttf", 48)
                 hora_do_gol = font.render('ESTÁ NA HORA DE FAZER GOL!!!', False, (0, 0, 0))
                 window.blit(hora_do_gol, (330, 490))
 
@@ -268,7 +267,7 @@ while game:
 
         for nome, musica in dicio_musica.items():
             if lista_musica[variavelmusica] == musica:
-                font = pygame.font.SysFont(fonte, 75)
+                font = pygame.font.SysFont("fonte/Minecraft.ttf", 75)
                 nome_musica = font.render(nome, False, (0, 0, 0))
                 nome_musica_rect = nome_musica.get_rect()
                 nome_musica_rect.center = ((600, 220))

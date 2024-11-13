@@ -37,6 +37,7 @@ logo_sp = pygame.image.load("imagens/logo sao paulo.png").convert_alpha()
 logo_flu = pygame.image.load("imagens/logo fluminense png.png").convert_alpha()
 logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha()
 logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
+fonte = pygame.image.load("fonte/Minecraft.ttf").convert
 
 
 #========= Texto
@@ -50,8 +51,6 @@ tela_atual='Tela de carregamento'
 
 # === imagem times de futebol
 i = 0
-# logo_inter = pygame.transform.scale(logo_inter, (10, 10))
-# logo_borussia = pygame.transform.scale(logo_borussia, (10, 10))
 lista_times = [logo_sp, logo_flu, logo_borussia, logo_inter]
 dicio_times = {
 
@@ -66,11 +65,11 @@ dicio_times = {
 lista_musica = ['audios/1.mp3', 'audios/2.mp3', 'audios/3.mp3', 'audios/4.mp3', 'audios/5.mp3']
 dicio_musica = {
 
-    "nome1":'audios/1.mp3',
-    "nome2":'audios/2.mp3',
-    "nome3":'audios/3.mp3',
-    "nome4":'audios/4.mp3',
-    "nome5":'audios/5.mp3'
+    "Feet don't fail me now":'audios/1.mp3',
+    "Wavin flags":'audios/2.mp3',
+    "Miss Alissa":'audios/3.mp3',
+    "My type":'audios/4.mp3',
+    "We are one":'audios/5.mp3'
 
 }
 variavelmusica = random.randint(0,4) 
@@ -128,7 +127,7 @@ while game:
                 barra_carregamento += 3
 
             else:
-                font = pygame.font.SysFont(None, 48)
+                font = pygame.font.SysFont(fonte, 48)
                 hora_do_gol = font.render('ESTÁ NA HORA DE FAZER GOL!!!', False, (0, 0, 0))
                 window.blit(hora_do_gol, (330, 490))
 
@@ -148,7 +147,7 @@ while game:
             if variavelmusica == 1:
                 pygame.mixer.music.play(0, start=11)
                 variavelmusica += 1
-            if variavelmusica != 1:
+            if variavelmusica != 1 and variavelmusica != 4:
                 pygame.mixer.music.play(0, start=0.1)
                 variavelmusica += 1
             if variavelmusica == 4:
@@ -269,9 +268,11 @@ while game:
 
         for nome, musica in dicio_musica.items():
             if lista_musica[variavelmusica] == musica:
-                font = pygame.font.SysFont(None, 46)
+                font = pygame.font.SysFont(fonte, 75)
                 nome_musica = font.render(nome, False, (0, 0, 0))
-                window.blit(nome_musica, (550, 250))
+                nome_musica_rect = nome_musica.get_rect()
+                nome_musica_rect.center = ((600, 220))
+                window.blit(nome_musica, (nome_musica_rect))
 
 
         mouse_pos = pygame.mouse.get_pos()
@@ -362,7 +363,7 @@ while game:
 
         # === Colocar e escolha dos times
         
-        time = pygame.transform.scale(lista_times[i], (500, 282))
+        time = pygame.transform.scale(lista_times[i], (250, 250))
         time_rect=time.get_rect()
         time_rect.center = ((largura * 1/2), (altura * 1/2))
         window.blit(time, (time_rect))

@@ -408,7 +408,7 @@ while game:
             botao_confirma_rect.center = ((600, 500))
             window.blit(botao_confirma, (botao_confirma_rect))
         
-        time_atual = time[i]
+        time_atual = lista_times[i]
 
     if tela_atual == "Disputa":
 

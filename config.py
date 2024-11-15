@@ -1,4 +1,5 @@
 import pygame
+from os import path
 
 pygame.init()
 
@@ -19,9 +20,10 @@ LARANJA = (255, 100, 0)
 
 #Acessa Arquivos
 
-DIR_IMG = "imagens/"
-DIR_WAV = "audios/"
-DIR_FONT = "fonte/"
+BASE_DIR = path.dirname(__file__)
+DIR_IMG = path.join(BASE_DIR, 'assets', 'audios')
+DIR_WAV = path.join(BASE_DIR, 'assets', 'fontes')
+DIR_FNT = path.join(BASE_DIR, 'assets', 'imagens')
 
 #Inicializa Jogo e Clock
 

@@ -95,7 +95,7 @@ while game:
 
         # ----- Gera saídas
 
-        imagem_fundo = pygame.transform.scale(imagem_fundo, (1200, 600))
+        imagem_fundo = pygame.transform.scale(imagem_fundo, (LARGURA, ALTURA))
         window.blit(imagem_fundo, (0, 0))
 
         # ==== fica 6 segundos na tela de carregamento
@@ -219,30 +219,30 @@ while game:
         # === Retangulo do menu
             # Retangulo preto (contorno)
         cor = PRETO
-        largura_r = (636)
-        altura_r = (436)
-        tamanho = (largura_r, altura_r)
+        LARGURA_r = (636)
+        ALTURA_r = (436)
+        tamanho = (LARGURA_r, ALTURA_r)
         posicao = (1/4 * LARGURA - 18, 1/5 * ALTURA - 18)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo laranja
         cor = LARANJA
-        largura_r = (630)
-        altura_r = (430)
-        tamanho = (largura_r, altura_r)
+        LARGURA_r = (630)
+        ALTURA_r = (430)
+        tamanho = (LARGURA_r, ALTURA_r)
         posicao = (1/4 * LARGURA - 15, 1/5 * ALTURA - 15)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo azul marinho
         cor = AZUL_MARINHO
-        largura_r = (610)
-        altura_r = (410)
-        tamanho = (largura_r, altura_r)
+        LARGURA_r = (610)
+        ALTURA_r = (410)
+        tamanho = (LARGURA_r, ALTURA_r)
         posicao = (1/4 * LARGURA - 5, 1/5 * ALTURA - 5)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo azul claro
         cor = AZUL_CLARO
-        largura_r = (600)
-        altura_r = (400)
-        tamanho = (largura_r, altura_r)
+        LARGURA_r = (ALTURA)
+        ALTURA_r = (400)
+        tamanho = (LARGURA_r, ALTURA_r)
         posicao = (1/4 * LARGURA, 1/5 * ALTURA)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
 
@@ -271,7 +271,7 @@ while game:
                 font = pygame.font.Font("fonte/Minecraft.ttf", 48)
                 nome_musica = font.render(nome, False, PRETO)
                 nome_musica_rect = nome_musica.get_rect()
-                nome_musica_rect.center = ((600, 220))
+                nome_musica_rect.center = ((ALTURA, 220))
                 window.blit(nome_musica, (nome_musica_rect))
 
 
@@ -330,34 +330,34 @@ while game:
 
 
             # Retangulo preto (contorno)
-        largura_r = 836
-        altura_r = 506
+        LARGURA_r = 836
+        ALTURA_r = 506
 
         cor = PRETO
-        largura_r = (largura_r)
-        altura_r = (altura_r)
-        tamanho = (largura_r, altura_r)
+        LARGURA_r = (LARGURA_r)
+        ALTURA_r = (ALTURA_r)
+        tamanho = (LARGURA_r, ALTURA_r)
         posicao = (1/6 * LARGURA - 18, 1/7 * ALTURA - 18)
         pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo laranja
         cor = LARANJA
-        largura_r = (largura_r - 6)
-        altura_r = (altura_r - 6)
-        tamanho = (largura_r, altura_r)
+        LARGURA_r = (LARGURA_r - 6)
+        ALTURA_r = (ALTURA_r - 6)
+        tamanho = (LARGURA_r, ALTURA_r)
         posicao = (1/6 * LARGURA - 15, 1/7 * ALTURA - 15)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo azul marinho
         cor = AZUL_MARINHO
-        largura_r = (largura_r - 20)
-        altura_r = (altura_r - 20)
-        tamanho = (largura_r, altura_r)
+        LARGURA_r = (LARGURA_r - 20)
+        ALTURA_r = (ALTURA_r - 20)
+        tamanho = (LARGURA_r, ALTURA_r)
         posicao = (1/6 * LARGURA - 5, 1/7 * ALTURA - 5)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo azul claro
         cor = AZUL_CLARO
-        largura_r = (largura_r - 10)
-        altura_r = (altura_r - 10)
-        tamanho = (largura_r, altura_r)
+        LARGURA_r = (LARGURA_r - 10)
+        ALTURA_r = (ALTURA_r - 10)
+        tamanho = (LARGURA_r, ALTURA_r)
         posicao = (1/6 * LARGURA, 1/7 * ALTURA)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
 
@@ -395,24 +395,24 @@ while game:
             # cria o botão de confirmar
         botao_confirma = pygame.transform.scale(botao_confirma, (200, 200))
         botao_confirma_rect = botao_confirma.get_rect()
-        botao_confirma_rect.center = ((600, 500))
+        botao_confirma_rect.center = ((ALTURA, 500))
         window.blit(botao_confirma, (botao_confirma_rect))
         
         if botao_confirma_rect.collidepoint(mouse_pos):
             botao_confirma_cor = pygame.transform.scale(botao_confirma_cor, (200, 200))
             botao_confirma_cor_rect = botao_confirma_cor.get_rect()
-            botao_confirma_cor_rect.center = ((600, 500))
+            botao_confirma_cor_rect.center = ((ALTURA, 500))
             window.blit(botao_confirma_cor, (botao_confirma_cor_rect))
         else:
             botao_confirma = pygame.transform.scale(botao_confirma, (200, 200))
             botao_confirma_rect = botao_confirma.get_rect()
-            botao_confirma_rect.center = ((600, 500))
+            botao_confirma_rect.center = ((ALTURA, 500))
             window.blit(botao_confirma, (botao_confirma_rect))
         
         time_atual = lista_times[i]
 
     if tela_atual == "Disputa":
-        fundo_gol = pygame.transform.scale(imagem_gol, (1200,600))
+        fundo_gol = pygame.transform.scale(imagem_gol, (LARGURA, ALTURA))
         window.blit(fundo_gol,(0, 0))
         pos_mouse = pygame.mouse.get_pos()
 

@@ -2,15 +2,14 @@
 # ----- Importa e inicia pacotes
 import pygame
 import random
+from config import *
 
 pygame.init()
 pygame.mixer.init()
 pygame.font.init()
 
 # ----- Gera tela principal
-largura = 1200
-altura = 600
-window = pygame.display.set_mode((largura, altura))
+window = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption('Penalty shoot out')
 imagem_logo = pygame.image.load("imagens\logo2.png").convert_alpha()
 imagem_fundo = pygame.image.load("imagens\Tela.png").convert()
@@ -102,16 +101,16 @@ while game:
         # ==== fica 6 segundos na tela de carregamento
         if frames<=360:
             # cria a barra de carregamento
-            cor = (0, 0, 0)
+            cor = PRETO
             vertices = [(200, 450), (200, 480), (1000, 480), (1000, 450)]
 
             pygame.draw.polygon(window, cor, vertices, width=3)
 
-            cor = (255, 255, 255)
+            cor = BRANCO
             vertices = [(201, 451), (201, 479), (999, 479), (999, 451)]
             pygame.draw.polygon(window, cor, vertices)
 
-            cor = (0, 255, 0)
+            cor = VERDE
             vertices = [(203, 453), (203, 477), (203 + barra_carregamento, 477), (203 + barra_carregamento, 453)]
 
             pygame.draw.polygon(window, cor, vertices)
@@ -119,7 +118,7 @@ while game:
             # imprime o logo no tela
             imagem_logo = pygame.transform.scale(imagem_logo, (400, 400))
             imagem_logo_rect=imagem_logo.get_rect()
-            imagem_logo_rect.center=((largura/2),(altura/2)-50)
+            imagem_logo_rect.center=((LARGURA/2),(ALTURA/2)-50)
             window.blit(imagem_logo, (imagem_logo_rect))
 
             if barra_carregamento + 205 <= 997:
@@ -127,9 +126,9 @@ while game:
 
             else:
                 font = pygame.font.Font("fonte/Minecraft.ttf", 48)
-                hora_do_gol = font.render('ESTA NA HORA DE FAZER GOL!!!', False, (0, 0, 0))
+                hora_do_gol = font.render('ESTA NA HORA DE FAZER GOL!!!', False, PRETO)
                 hora_do_gol_rect = hora_do_gol.get_rect()
-                hora_do_gol_rect.center = ((largura/2, 520))
+                hora_do_gol_rect.center = ((LARGURA/2, 520))
                 window.blit(hora_do_gol, (hora_do_gol_rect))
 
         else:
@@ -155,18 +154,18 @@ while game:
                 variavelmusica = 0
 
         # === Cria retangulo para a placa "PLAY" e "CONFIG" mudarem de cor com o mouse
-        cor = (255, 255, 255)
+        cor = BRANCO
         vertices = [(525, 330), (525, 395), (690, 395), (690, 330)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices, width = 1)
 
-        cor = (255, 255, 255)
+        cor = BRANCO
         vertices = [(550, 450), (550, 550), (670, 550), (670, 450)]
         retangulo_colisao2 = pygame.draw.polygon(window, cor, vertices, width = 1)
 
         # coloca o escrito "PENALTY SHOOT OUT" na tela
         imagem_escrito = pygame.transform.scale(imagem_escrito, (500, 500))
         imagem_escrito_rect=imagem_escrito.get_rect()
-        imagem_escrito_rect.center=((largura/2),(altura/2)-150)
+        imagem_escrito_rect.center=((LARGURA/2),(ALTURA/2)-150)
         window.blit(imagem_escrito, (imagem_escrito_rect))
 
         # === Muda a cor das placas quando o mouse passa por cima
@@ -174,23 +173,23 @@ while game:
         if retangulo_colisao.collidepoint(mouse_pos):
             imagem_play_mouse = pygame.transform.scale(imagem_play_mouse, (345, 485))
             imagem_play_mouse_rect=imagem_play_mouse.get_rect()
-            imagem_play_mouse_rect.center=((largura/2)+11,(altura/2 + 80))
+            imagem_play_mouse_rect.center=((LARGURA/2)+11,(ALTURA/2 + 80))
             window.blit(imagem_play_mouse, (imagem_play_mouse_rect))
         else:
             imagem_play = pygame.transform.scale(imagem_play, (200, 100))
             imagem_play_rect=imagem_play.get_rect()
-            imagem_play_rect.center=((largura/2)+10,(altura/2 + 65))
+            imagem_play_rect.center=((LARGURA/2)+10,(ALTURA/2 + 65))
             window.blit(imagem_play, (imagem_play_rect))
 
         if retangulo_colisao2.collidepoint(mouse_pos):
             imagem_config_mouse = pygame.transform.scale(imagem_config_mouse, (345, 335))
             imagem_config_mouse_rect=imagem_config_mouse.get_rect()
-            imagem_config_mouse_rect.center=((largura/2)+10,(altura/2 + 200))
+            imagem_config_mouse_rect.center=((LARGURA/2)+10,(ALTURA/2 + 200))
             window.blit(imagem_config_mouse, (imagem_config_mouse_rect))
         else:
             imagem_config = pygame.transform.scale(imagem_config, (200, 185))
             imagem_config_rect=imagem_config.get_rect()
-            imagem_config_rect.center=((largura/2)+10,(altura/2 + 200))
+            imagem_config_rect.center=((LARGURA/2)+10,(ALTURA/2 + 200))
             window.blit(imagem_config, (imagem_config_rect))
 
         # ----- Trata eventos
@@ -210,41 +209,41 @@ while game:
     # === TELA CONFIGURAÇÃO
     
     if tela_atual == "Tela config":
-        cor = (0, 0, 0)
+        cor = PRETO
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
 
-        imagem_fundo_pix = pygame.transform.scale(imagem_fundo_pix, (largura, altura))
+        imagem_fundo_pix = pygame.transform.scale(imagem_fundo_pix, (LARGURA, ALTURA))
         window.blit(imagem_fundo_pix, (0, 0))
 
         # === Retangulo do menu
             # Retangulo preto (contorno)
-        cor = (0, 0, 0)
+        cor = PRETO
         largura_r = (636)
         altura_r = (436)
         tamanho = (largura_r, altura_r)
-        posicao = (1/4 * largura - 18, 1/5 * altura - 18)
+        posicao = (1/4 * LARGURA - 18, 1/5 * ALTURA - 18)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo laranja
-        cor = (255, 100, 0)
+        cor = LARANJA
         largura_r = (630)
         altura_r = (430)
         tamanho = (largura_r, altura_r)
-        posicao = (1/4 * largura - 15, 1/5 * altura - 15)
+        posicao = (1/4 * LARGURA - 15, 1/5 * ALTURA - 15)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo azul marinho
-        cor = (60, 72, 92)
+        cor = AZUL_MARINHO
         largura_r = (610)
         altura_r = (410)
         tamanho = (largura_r, altura_r)
-        posicao = (1/4 * largura - 5, 1/5 * altura - 5)
+        posicao = (1/4 * LARGURA - 5, 1/5 * ALTURA - 5)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo azul claro
-        cor = (173, 216, 230)
+        cor = AZUL_CLARO
         largura_r = (600)
         altura_r = (400)
         tamanho = (largura_r, altura_r)
-        posicao = (1/4 * largura, 1/5 * altura)
+        posicao = (1/4 * LARGURA, 1/5 * ALTURA)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
 
 
@@ -252,17 +251,17 @@ while game:
             # botao pause
         botao_pause_music = pygame.transform.scale(botao_pause_music, (50, 50))
         botao_pause_music_rect=botao_pause_music.get_rect()
-        botao_pause_music_rect.center = ((largura * 1/2), (altura * 1/2))
+        botao_pause_music_rect.center = ((LARGURA * 1/2), (ALTURA * 1/2))
         window.blit(botao_pause_music, (botao_pause_music_rect))
             # botao next
         botao_next_music = pygame.transform.scale(botao_next_music, (50, 50))
         botao_next_music_rect=botao_next_music.get_rect()
-        botao_next_music_rect.center = ((largura * 1/2) + 65, (altura * 1/2) + 5)
+        botao_next_music_rect.center = ((LARGURA * 1/2) + 65, (ALTURA * 1/2) + 5)
         window.blit(botao_next_music, (botao_next_music_rect))
             # botao previous
         botao_previous_music = pygame.transform.scale(botao_previous_music, (50, 50))
         botao_previous_music_rect=botao_previous_music.get_rect()
-        botao_previous_music_rect.center = ((largura * 1/2) - 65, (altura * 1/2) + 5)
+        botao_previous_music_rect.center = ((LARGURA * 1/2) - 65, (ALTURA * 1/2) + 5)
         window.blit(botao_previous_music, (botao_previous_music_rect))
         
 
@@ -270,7 +269,7 @@ while game:
         for nome, musica in dicio_musica.items():
             if lista_musica[variavelmusica-1] == musica:
                 font = pygame.font.Font("fonte/Minecraft.ttf", 48)
-                nome_musica = font.render(nome, False, (0, 0, 0))
+                nome_musica = font.render(nome, False, PRETO)
                 nome_musica_rect = nome_musica.get_rect()
                 nome_musica_rect.center = ((600, 220))
                 window.blit(nome_musica, (nome_musica_rect))
@@ -315,7 +314,7 @@ while game:
                 if botao_confirma_rect.collidepoint(mouse_pos):
                     tela_atual = "Disputa"
         
-        cor = (0, 0, 0)
+        cor = PRETO
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
 
@@ -334,44 +333,44 @@ while game:
         largura_r = 836
         altura_r = 506
 
-        cor = (0, 0, 0)
+        cor = PRETO
         largura_r = (largura_r)
         altura_r = (altura_r)
         tamanho = (largura_r, altura_r)
-        posicao = (1/6 * largura - 18, 1/7 * altura - 18)
+        posicao = (1/6 * LARGURA - 18, 1/7 * ALTURA - 18)
         pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo laranja
-        cor = (255, 100, 0)
+        cor = LARANJA
         largura_r = (largura_r - 6)
         altura_r = (altura_r - 6)
         tamanho = (largura_r, altura_r)
-        posicao = (1/6 * largura - 15, 1/7 * altura - 15)
+        posicao = (1/6 * LARGURA - 15, 1/7 * ALTURA - 15)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo azul marinho
-        cor = (60, 72, 92)
+        cor = AZUL_MARINHO
         largura_r = (largura_r - 20)
         altura_r = (altura_r - 20)
         tamanho = (largura_r, altura_r)
-        posicao = (1/6 * largura - 5, 1/7 * altura - 5)
+        posicao = (1/6 * LARGURA - 5, 1/7 * ALTURA - 5)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
             # Retangulo azul claro
-        cor = (173, 216, 230)
+        cor = AZUL_CLARO
         largura_r = (largura_r - 10)
         altura_r = (altura_r - 10)
         tamanho = (largura_r, altura_r)
-        posicao = (1/6 * largura, 1/7 * altura)
+        posicao = (1/6 * LARGURA, 1/7 * ALTURA)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
 
         # === Colocar e escolha dos times
         
         time = pygame.transform.scale(lista_times[i], (250, 250))
         time_rect=time.get_rect()
-        time_rect.center = ((largura * 1/2), (altura * 1/2))
+        time_rect.center = ((LARGURA * 1/2), (ALTURA * 1/2))
         window.blit(time, (time_rect))
 
         # Passar para o próximo time
 
-        cor = (0, 0, 0)
+        cor = PRETO
         retangulo_colisao_prox = pygame.draw.rect(window, cor, (730, 360, 75, 40))
         #print(mouse_pos)
 

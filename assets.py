@@ -1,6 +1,6 @@
 import pygame
 import os
-from config import DIR_IMG, DIR_WAV, DIR_FNT, LARGURA, ALTURA
+from config import DIR_IMG, DIR_WAV, DIR_FNT
 
 LOGO = 'logo'
 LOGO_2 = 'logo_escrito'

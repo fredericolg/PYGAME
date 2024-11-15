@@ -19,9 +19,9 @@ LARANJA = (255, 100, 0)
 
 #Acessa Arquivos
 
-DIR_IMAGENS = "imagens/"
-DIR_SONS = "audios/"
-DIR_FONTES = "fonte/"
+DIR_IMG = "imagens/"
+DIR_WAV = "audios/"
+DIR_FONT = "fonte/"
 
 #Inicializa Jogo e Clock
 
@@ -29,3 +29,11 @@ window = pygame.display.set_mode(LARGURA, ALTURA)
 pygame.display.set_caption(TÍTULO)
 
 clock = pygame.time.Clock()
+
+#Estados do Jogo
+
+LOAD = 0 # Tela de Carregamento
+INIT = 1 # Tela Inicial
+CONFIG = 2 # Tela de Configurações
+SELECT = 3 # Tela de Seleção de Times
+PLAY = 4 # Tela Disputa

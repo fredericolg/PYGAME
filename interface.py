@@ -3,6 +3,7 @@
 import pygame
 import random
 from config import *
+from assets import *
 
 pygame.init()
 pygame.mixer.init()
@@ -10,7 +11,7 @@ pygame.font.init()
 
 # ----- Gera tela principal
 window = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption('Penalty shoot out')
+pygame.display.set_caption(TITULO)
 imagem_logo = pygame.image.load("imagens\logo2.png").convert_alpha()
 imagem_fundo = pygame.image.load("imagens\Tela.png").convert()
 imagem_fundo_pix = pygame.image.load("imagens/Tela pixelada.jpg").convert()
@@ -37,12 +38,37 @@ imagem_gol = pygame.image.load("imagens/tela fundo gol.jpeg").convert_alpha()
 
 #========= Texto
 
+class Button:
+    def __init__(self, x, y, largura, altura, default_image, hover_image=None, callback=None):
+
+        self.rect = pygame.Rect(x, y, width, height)
+        self.default_image = pygame.transform.scale(default_image, (width, height))
+        self.hover_image = pygame.transform.scale(hover_image, (width, height)) if hover_image else None
+        self.callback = callback
+        self.hovered = False
+
+    def draw(self, surface):
+
+        if self.hovered and self.hover_image:
+            surface.blit(self.hover_image, (self.rect.x, self.rect.y))
+        else:
+            surface.blit(self.default_image, (self.rect.x, self.rect.y))
+
+    def check_hover(self, mouse_pos):
+
+        self.hovered = self.rect.collidepoint(mouse_pos)
+
+    def handle_event(self, event):
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Botão esquerdo do mouse
+            if self.rect.collidepoint(event.pos) and self.callback:
+                self.callback()
 
 game = True
 # === tempo de primeira tela (tela de carregamento)
 barra_carregamento = 0
 frames=0
-tela_atual='Tela de carregamento'
+state=LOAD
 
 # === imagem times de futebol
 i = 0
@@ -74,9 +100,14 @@ pygame.mixer.music.set_endevent(MUSIC_END)
 # === variavel para posição do goleiro
 pos_gol = random.randint(1,5)
 
-# === variavel para ajuste de tempo da tela
+# def game_screen(window):
 clock = pygame.time.Clock()
-FPS = 60
+
+LOAD = 0 
+INIT = 1 
+CONFIG = 2 
+SELECT = 3 
+PLAY = 4
 
 
 # ===== Loop principal =====
@@ -86,7 +117,7 @@ while game:
 
     # === TELA DE CARREGAMENTO
 
-    if tela_atual == 'Tela de carregamento':
+    if state == LOAD:
         # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências
@@ -132,12 +163,12 @@ while game:
                 window.blit(hora_do_gol, (hora_do_gol_rect))
 
         else:
-            tela_atual = 'Tela de início'
+            state = INIT
 
     
     # TELA DE INÍCIO
 
-    if tela_atual == 'Tela de início':
+    if state == INIT:
         window.blit(imagem_fundo, (0, 0))
 
         # ============== Músicas ================= #
@@ -201,14 +232,14 @@ while game:
                 if event.button==1:
                     mouse_pos=event.pos # ao clicar com o botao esquerdo, muda de tela
                     if retangulo_colisao.collidepoint(mouse_pos):
-                        tela_atual = "Tela play"
+                        state = SELECT
                     if retangulo_colisao2.collidepoint(mouse_pos):
-                        tela_atual = "Tela config"
+                        state = CONFIG
 
 
     # === TELA CONFIGURAÇÃO
     
-    if tela_atual == "Tela config":
+    if state == CONFIG:
         cor = PRETO
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
@@ -289,10 +320,10 @@ while game:
                 game = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if retangulo_colisao.collidepoint(mouse_pos):
-                    tela_atual = "Tela de início"
+                    state = INIT
 
 
-    if tela_atual == "Tela play":
+    if state == SELECT:
         
         for event in pygame.event.get():
             # ----- Verifica consequências
@@ -300,7 +331,7 @@ while game:
                 game = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if retangulo_colisao.collidepoint(mouse_pos):
-                    tela_atual = "Tela de início"
+                    state = INIT
                 if retangulo_colisao_prox.collidepoint(mouse_pos):
                     if i < 3:
                         i += 1
@@ -312,7 +343,7 @@ while game:
                     else:
                         i = 3
                 if botao_confirma_rect.collidepoint(mouse_pos):
-                    tela_atual = "Disputa"
+                    state = PLAY
         
         cor = PRETO
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
@@ -411,14 +442,14 @@ while game:
         
         time_atual = lista_times[i]
 
-    if tela_atual == "Disputa":
+    if state == PLAY:
         fundo_gol = pygame.transform.scale(imagem_gol, (LARGURA, ALTURA))
         window.blit(fundo_gol,(0, 0))
         pos_mouse = pygame.mouse.get_pos()
 
         larg = 170
         alt = 106
-        cor = (0,0,255)
+        cor = AZUL
 
         x_1 = 340
         y_1 = 170

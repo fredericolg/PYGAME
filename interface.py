@@ -114,7 +114,7 @@ LOAD_start = None
 LOAD_end = 6000  # Tempo total do carregamento (6 segundos)
 
 msg_start = None
-msg_end = 1500
+msg_end = 2000
 
 # ===== Loop principal =====
 while game:
@@ -152,15 +152,15 @@ while game:
             if msg_start is None:
                 msg_start = pygame.time.get_ticks()
 
-        font = assets["FONTE_PRINCIPAL"]
-        hora_do_gol = font.render('ESTA NA HORA DE FAZER GOL!!!', False, PRETO)
+        hora_do_gol = assets[FONTE_PRINCIPAL].render('ESTA NA HORA DE FAZER GOL!!!', False, PRETO)
         hora_do_gol_rect = hora_do_gol.get_rect(center=(LARGURA / 2, 520))
         window.blit(hora_do_gol, hora_do_gol_rect)
 
-        # Verifica se o tempo de exibição da mensagem já passou
-        if pygame.time.get_ticks() - msg_start >= msg_end:
-            state = INIT
-            LOAD_start = None
+        if progresso >= 1:
+            if pygame.time.get_ticks() - msg_start >= msg_end:
+                state = INIT
+                LOAD_start = None
+                msg_start_start = None
 
     
     # TELA DE INÍCIO

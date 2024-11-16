@@ -4,6 +4,7 @@ import pygame
 import random
 from config import *
 from assets import *
+from funcoes import *
 
 pygame.init()
 pygame.mixer.init()
@@ -12,6 +13,8 @@ pygame.font.init()
 # ----- Gera tela principal
 window = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption(TITULO)
+
+assets = load_assets()
 imagem_logo = pygame.image.load("imagens\logo2.png").convert_alpha()
 imagem_fundo = pygame.image.load("imagens\Tela.png").convert()
 imagem_fundo_pix = pygame.image.load("imagens/Tela pixelada.jpg").convert()
@@ -38,21 +41,21 @@ imagem_gol = pygame.image.load("imagens/tela fundo gol.jpeg").convert_alpha()
 
 #========= Texto
 
-class Button:
-    def __init__(self, x, y, largura, altura, default_image, hover_image=None, callback=None):
+class Botão:
+    def __init__(self, x, y, width, height, img1, img2=None, ação=None):
 
         self.rect = pygame.Rect(x, y, width, height)
-        self.default_image = pygame.transform.scale(default_image, (width, height))
-        self.hover_image = pygame.transform.scale(hover_image, (width, height)) if hover_image else None
-        self.callback = callback
+        self.img1 = pygame.transform.scale(img1, (width, height))
+        self.img2 = pygame.transform.scale(img2, (width, height)) if img2 else None
+        self.ação = ação
         self.hovered = False
 
     def draw(self, surface):
 
-        if self.hovered and self.hover_image:
-            surface.blit(self.hover_image, (self.rect.x, self.rect.y))
+        if self.hovered and self.img2:
+            surface.blit(self.img2, (self.rect.x, self.rect.y))
         else:
-            surface.blit(self.default_image, (self.rect.x, self.rect.y))
+            surface.blit(self.img1, (self.rect.x, self.rect.y))
 
     def check_hover(self, mouse_pos):
 
@@ -61,14 +64,12 @@ class Button:
     def handle_event(self, event):
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Botão esquerdo do mouse
-            if self.rect.collidepoint(event.pos) and self.callback:
-                self.callback()
+            if self.rect.collidepoint(event.pos) and self.ação:
+                self.ação()
 
 game = True
 # === tempo de primeira tela (tela de carregamento)
-barra_carregamento = 0
-frames=0
-state=LOAD
+state = LOAD
 
 # === imagem times de futebol
 i = 0
@@ -109,15 +110,25 @@ CONFIG = 2
 SELECT = 3 
 PLAY = 4
 
+LOAD_start = None
+LOAD_end = 6000  # Tempo total do carregamento (6 segundos)
+
+msg_start = None
+msg_end = 1500
 
 # ===== Loop principal =====
 while game:
-    frames+=1
     clock.tick(FPS)
 
-    # === TELA DE CARREGAMENTO
-
     if state == LOAD:
+        if LOAD_start is None:  # Inicializa apenas na primeira vez
+            LOAD_start = pygame.time.get_ticks()
+
+        time_spent = pygame.time.get_ticks() - LOAD_start
+
+        # Calcula o progresso (0 a 1)
+        progresso = min(time_spent / LOAD_end, 1)
+
         # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências
@@ -126,50 +137,36 @@ while game:
 
         # ----- Gera saídas
 
-        imagem_fundo = pygame.transform.scale(imagem_fundo, (LARGURA, ALTURA))
-        window.blit(imagem_fundo, (0, 0))
+        img_fundo = pygame.transform.scale(assets[FUNDO], (LARGURA, ALTURA))
+        window.blit(img_fundo, (0, 0))
 
+        desenha_barra(window, progresso)
         # ==== fica 6 segundos na tela de carregamento
-        if frames<=360:
-            # cria a barra de carregamento
-            cor = PRETO
-            vertices = [(200, 450), (200, 480), (1000, 480), (1000, 450)]
 
-            pygame.draw.polygon(window, cor, vertices, width=3)
+        # imprime o logo no tela
+        imagem_logo = pygame.transform.scale(assets[LOGO], (400, 400))
+        imagem_logo_rect = imagem_logo.get_rect(center=(LARGURA / 2, ALTURA / 2 - 50))
+        window.blit(imagem_logo, imagem_logo_rect)
 
-            cor = BRANCO
-            vertices = [(201, 451), (201, 479), (999, 479), (999, 451)]
-            pygame.draw.polygon(window, cor, vertices)
+        if progresso >= 1:
+            if msg_start is None:
+                msg_start = pygame.time.get_ticks()
 
-            cor = VERDE
-            vertices = [(203, 453), (203, 477), (203 + barra_carregamento, 477), (203 + barra_carregamento, 453)]
+        font = assets["FONTE_PRINCIPAL"]
+        hora_do_gol = font.render('ESTA NA HORA DE FAZER GOL!!!', False, PRETO)
+        hora_do_gol_rect = hora_do_gol.get_rect(center=(LARGURA / 2, 520))
+        window.blit(hora_do_gol, hora_do_gol_rect)
 
-            pygame.draw.polygon(window, cor, vertices)
-
-            # imprime o logo no tela
-            imagem_logo = pygame.transform.scale(imagem_logo, (400, 400))
-            imagem_logo_rect=imagem_logo.get_rect()
-            imagem_logo_rect.center=((LARGURA/2),(ALTURA/2)-50)
-            window.blit(imagem_logo, (imagem_logo_rect))
-
-            if barra_carregamento + 205 <= 997:
-                barra_carregamento += 3
-
-            else:
-                font = pygame.font.Font("fonte/Minecraft.ttf", 48)
-                hora_do_gol = font.render('ESTA NA HORA DE FAZER GOL!!!', False, PRETO)
-                hora_do_gol_rect = hora_do_gol.get_rect()
-                hora_do_gol_rect.center = ((LARGURA/2, 520))
-                window.blit(hora_do_gol, (hora_do_gol_rect))
-
-        else:
+        # Verifica se o tempo de exibição da mensagem já passou
+        if pygame.time.get_ticks() - msg_start >= msg_end:
             state = INIT
+            LOAD_start = None
 
     
     # TELA DE INÍCIO
 
     if state == INIT:
-        window.blit(imagem_fundo, (0, 0))
+        window.blit(assets[FUNDO], (0, 0))
 
         # ============== Músicas ================= #
         if not pygame.mixer.music.get_busy():       
@@ -519,6 +516,7 @@ while game:
         
     # ----- Atualiza estado do jogo
     pygame.display.update()  # Mostra o novo frame para o jogador
+
 
 # ===== Finalização =====
 pygame.quit()  # Função do PyGame que finaliza os recursos utilizados

@@ -36,7 +36,7 @@ def load_assets():
     assets[LOGO_2] = pygame.image.load(os.path.join(DIR_IMG, 'escrito.png')).convert_alpha()
     assets[FUNDO] = pygame.image.load(os.path.join(DIR_IMG, 'Tela.png')).convert()
     assets[FUNDO_PIX] = pygame.image.load(os.path.join(DIR_IMG, 'Tela pixelada.jpg')).convert()
-    assets[FUNDO_GOL] = pygame.image.load(os.path.join(DIR_IMG, 'tela fundo gol.jpeg.png')).convert_alpha()
+    assets[FUNDO_GOL] = pygame.image.load(os.path.join(DIR_IMG, 'tela fundo gol.jpeg')).convert_alpha()
 
     assets[BOTAO_PLAY] = pygame.image.load(os.path.join(DIR_IMG, 'imagem_play.png')).convert_alpha()
     assets[BOTAO_PLAY2] = pygame.image.load(os.path.join(DIR_IMG, 'play_cor.png')).convert_alpha()

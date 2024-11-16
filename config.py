@@ -2,9 +2,9 @@ from os import path
 
 # Acessa Pastas
 BASE_DIR = path.dirname(__file__)
-DIR_IMG = path.join(BASE_DIR, 'assets', 'audios')
-DIR_WAV = path.join(BASE_DIR, 'assets', 'fontes')
-DIR_FNT = path.join(BASE_DIR, 'assets', 'imagens')
+DIR_IMG = path.join(BASE_DIR, 'assets', 'imagens')
+DIR_WAV = path.join(BASE_DIR, 'assets', 'audios')
+DIR_FNT = path.join(BASE_DIR, 'assets', 'fonte')
 
 # Declara Constantes
 LARGURA = 1200

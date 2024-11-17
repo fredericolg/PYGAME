@@ -15,24 +15,14 @@ pygame.font.init()
 window = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption(TITULO)
 assets = load_assets()
-musica_atual = 0
-musica_atual = musica_manager('start', assets[MUSICAS])
 
-imagem_logo = pygame.image.load("imagens\logo2.png").convert_alpha()
-imagem_fundo = pygame.image.load("imagens\Tela.png").convert()
-imagem_fundo_pix = pygame.image.load("imagens/Tela pixelada.jpg").convert()
-imagem_play = pygame.image.load("imagens\imagem_play.png").convert_alpha()
-imagem_escrito = pygame.image.load("imagens\escrito.png").convert_alpha()
-imagem_play_mouse = pygame.image.load("imagens\play_cor.png").convert_alpha()
-imagem_config = pygame.image.load("imagens\Botao config2.png").convert_alpha()
-imagem_config_mouse = pygame.image.load("imagens\Botao config cor.png").convert_alpha()
+musica_atual = 0  # Inicialize o índice da música atual
+musica_atual = musica_manager('start', assets[MUSICAS], 0)  # Inicia com uma música aleatória
+
 imagem_seta = pygame.image.load("imagens/seta volta.png").convert_alpha()
 imagem_seta_mouse = pygame.image.load("imagens/seta volta cor.png").convert_alpha()
 imagem_seta_prox = pygame.image.load("imagens/seta prox.png").convert_alpha()
 imagem_seta_prox_cor = pygame.image.load("imagens/seta prox cor.png").convert_alpha()
-botao_pause_music = pygame.image.load("imagens/botao pause music.png").convert_alpha()
-botao_next_music = pygame.image.load("imagens/botao next music.png").convert_alpha()
-botao_previous_music = pygame.image.load("imagens/botao previous music.png").convert_alpha()
 botao_confirma = pygame.image.load("imagens/botao confirma.png").convert_alpha()
 botao_confirma_cor = pygame.image.load("imagens/botao confirma cor.png").convert_alpha()
 logo_sp = pygame.image.load("imagens/logo sao paulo.png").convert_alpha()
@@ -132,8 +122,8 @@ botao_config = Botão((LARGURA/2) - 90, (ALTURA/2) + 110, 200, 185, assets[BOTAO
 
 # Botões CONFIG
 botao_pause = Botão((LARGURA/2) - 35, (ALTURA/2) + 20, 50, 50, assets[MUSICA_STOP], 50, 50, assets[MUSICA_STOP], ação = lambda: musica_manager('pause', assets[MUSICAS], musica_atual))
-botao_back = Botão((LARGURA/2) - 100, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_BACK], 50, 50, assets[MUSICA_BACK], ação = lambda: musica_manager('back', assets[MUSICAS], musica_atual))
-botao_next = Botão((LARGURA/2) + 20, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_NEXT], 50, 50, assets[MUSICA_NEXT], ação = lambda: musica_manager('next', assets[MUSICAS], musica_atual))
+botao_back = Botão((LARGURA/2) - 100, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_BACK], 50, 50, assets[MUSICA_BACK], ação = lambda: musica_manager('previous', assets[MUSICAS], musica_atual))
+botao_next = Botão((LARGURA/2) + 35, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_NEXT], 50, 50, assets[MUSICA_NEXT], ação = lambda: musica_manager('next', assets[MUSICAS], musica_atual))
 botao_volta = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
 
 LOAD_start = None
@@ -231,7 +221,7 @@ while game:
         botao_config.draw(window)
 
         # coloca o escrito "PENALTY SHOOT OUT" na tela
-        imagem_escrito = pygame.transform.scale(imagem_escrito, (500, 500))
+        imagem_escrito = pygame.transform.scale(assets[LOGO_2], (500, 500))
         imagem_escrito_rect=imagem_escrito.get_rect()
         imagem_escrito_rect.center=((LARGURA/2),(ALTURA/2)-150)
         window.blit(imagem_escrito, (imagem_escrito_rect))
@@ -249,7 +239,7 @@ while game:
     
     if state == CONFIG:
 
-        imagem_fundo_pix = pygame.transform.scale(imagem_fundo_pix, (LARGURA, ALTURA))
+        imagem_fundo_pix = pygame.transform.scale(assets[FUNDO_PIX], (LARGURA, ALTURA))
         window.blit(imagem_fundo_pix, (0, 0))
 
         # === Retangulo do menu
@@ -282,14 +272,14 @@ while game:
         posicao = (1/4 * LARGURA, 1/5 * ALTURA)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
 
-        nome_musicas = list(assets[MUSICAS].keys())
+        nome_musicas = list(assets[MUSICAS].keys())  # Lista de nomes das músicas
         if nome_musicas:
-            # Obtém o nome e o artista da música atual
+            # Recalcula o nome e o artista da música atual com base no índice global
             musica_atual_nome = nome_musicas[musica_atual]
             musica_atual_info = assets[MUSICAS][musica_atual_nome]
             artista = musica_atual_info["artist"]
 
-            # Renderiza textos
+            # Renderiza os textos do nome da música e do artista
             font = assets[FONTE_PRINCIPAL]
             nome_musica_text = font.render(musica_atual_nome, True, PRETO)
             artista_text = font.render(artista, True, PRETO)

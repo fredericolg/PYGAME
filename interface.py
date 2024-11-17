@@ -31,6 +31,7 @@ logo_flu = pygame.image.load("imagens/logo fluminense png.png").convert_alpha()
 logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha()
 logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
 imagem_gol = pygame.image.load("imagens/tela fundo gol.jpeg").convert_alpha()
+bola_chute = pygame.image.load("imagens/Bola de futebol p&b.png").convert_alpha()
 
 
 game = True
@@ -80,7 +81,7 @@ msg_end = 1000
 
 # ========== Parâmetros para o jogo ===========
 game_over = False
-escolhas_gol = ["Esquerda Superior", "Esquerda Inferior", "Centro", "Direita Superior", "Direita Inferior"]
+escolhas_gol = ["Esquerda Superior", "Esquerda Inferior", "Direita Superior", "Direita Inferior"]
 rodadas = 0
 rodadas_max = 5
 msg_gol_duracao = 3000 
@@ -242,7 +243,8 @@ while game:
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
 
         window.blit(imagem_fundo, (0, 0))
-
+        
+        # Seta para voltar para o menu
         mouse_pos = pygame.mouse.get_pos()
         if retangulo_colisao.collidepoint(mouse_pos):
             imagem_seta_mouse = pygame.transform.scale(imagem_seta_mouse, (65, 65))
@@ -326,23 +328,33 @@ while game:
         x_1 = 340
         y_1 = 170
         canto_1 = pygame.Rect(x_1, y_1, larg, alt)
+        bola_chute = pygame.transform.scale(bola_chute, (100, 100))
+        window.blit(bola_chute, (x_1,y_1))
 
         x_2 = 690
         y_2 = 170
         canto_2 = pygame.Rect(x_2, y_2, larg, alt)
+        bola_chute = pygame.transform.scale(bola_chute, (100, 100))
+        window.blit(bola_chute, (x_2+70,y_2))
 
         x_3 = 340
         y_3 = 382
         canto_3 = pygame.Rect(x_3, y_3, larg, alt)
+        bola_chute = pygame.transform.scale(bola_chute, (100, 100))
+        window.blit(bola_chute, (x_3,y_3))
 
         x_4 = 690
         y_4 = 382
         canto_4 = pygame.Rect(x_4, y_4, larg, alt)
+        bola_chute = pygame.transform.scale(bola_chute, (100, 100))
+        window.blit(bola_chute, (x_4+70,y_4))
 
-        x_5 = 510
-        y_5 = 276
-        larg_5 = 180
-        canto_5 = pygame.Rect(x_5, y_5, larg_5, alt)
+        # x_5 = 510
+        # y_5 = 276
+        # larg_5 = 180
+        # canto_5 = pygame.Rect(x_5, y_5, larg_5, alt)
+        # bola_chute = pygame.transform.scale(bola_chute, (100, 100))
+        # window.blit(bola_chute, (x_5,y_5))
 
         tempo = pygame.time.get_ticks()
 
@@ -360,9 +372,9 @@ while game:
                     pos_bola = "Direita Superior"
                 if canto_4.collidepoint(pos_mouse):
                     pos_bola = "Direita Inferior"
-                if canto_5.collidepoint(pos_mouse):
-                    pos_bola = "Centro"
-                
+                # if canto_5.collidepoint(pos_mouse):
+                #     pos_bola = "Centro"
+
                 if pos_bola:
                     pos_gol = random.choice(escolhas_gol)
 

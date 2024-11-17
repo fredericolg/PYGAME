@@ -20,18 +20,18 @@ music_controller.set_global_volume(0.8)
 music_controller.set_individual_volume("Feet Don't Fail Me Now", 1)
 
 
-imagem_seta = pygame.image.load("imagens/seta volta.png").convert_alpha()
-imagem_seta_mouse = pygame.image.load("imagens/seta volta cor.png").convert_alpha()
-imagem_seta_prox = pygame.image.load("imagens/seta prox.png").convert_alpha()
-imagem_seta_prox_cor = pygame.image.load("imagens/seta prox cor.png").convert_alpha()
-botao_confirma = pygame.image.load("imagens/botao confirma.png").convert_alpha()
-botao_confirma_cor = pygame.image.load("imagens/botao confirma cor.png").convert_alpha()
+imagem_seta = assets[SETA_BACK]
+imagem_seta_mouse = assets[SETA_BACK2]
+imagem_seta_prox = assets[SETA_NEXT]
+imagem_seta_prox_cor = assets[SETA_NEXT2]
+botao_confirma = assets[BOTAO_CONFIRM]
+botao_confirma_cor = assets[BOTAO_CONFIRM2]
 logo_sp = pygame.image.load("imagens/logo sao paulo.png").convert_alpha()
 logo_flu = pygame.image.load("imagens/logo fluminense png.png").convert_alpha()
 logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha()
 logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
-imagem_gol = pygame.image.load("imagens/tela fundo gol.jpeg").convert_alpha()
-bola_chute = pygame.image.load("imagens/Bola de futebol p&b.png").convert_alpha()
+imagem_gol = assets[FUNDO_GOL]
+bola_chute = assets[BOLA_CHUTE]
 
 
 game = True
@@ -325,36 +325,38 @@ while game:
         larg = 170
         alt = 106
 
+        # == Define canto superior esquerdo
         x_1 = 340
         y_1 = 170
         canto_1 = pygame.Rect(x_1, y_1, larg, alt)
         bola_chute = pygame.transform.scale(bola_chute, (100, 100))
         window.blit(bola_chute, (x_1,y_1))
 
+        # == Define canto superior direito
         x_2 = 690
         y_2 = 170
         canto_2 = pygame.Rect(x_2, y_2, larg, alt)
         bola_chute = pygame.transform.scale(bola_chute, (100, 100))
         window.blit(bola_chute, (x_2+70,y_2))
 
+        # == Define canto inferior esquerdo
         x_3 = 340
         y_3 = 382
         canto_3 = pygame.Rect(x_3, y_3, larg, alt)
         bola_chute = pygame.transform.scale(bola_chute, (100, 100))
         window.blit(bola_chute, (x_3,y_3))
 
+        # == Define canto inferior direito
         x_4 = 690
         y_4 = 382
         canto_4 = pygame.Rect(x_4, y_4, larg, alt)
         bola_chute = pygame.transform.scale(bola_chute, (100, 100))
         window.blit(bola_chute, (x_4+70,y_4))
 
-        # x_5 = 510
-        # y_5 = 276
-        # larg_5 = 180
-        # canto_5 = pygame.Rect(x_5, y_5, larg_5, alt)
-        # bola_chute = pygame.transform.scale(bola_chute, (100, 100))
-        # window.blit(bola_chute, (x_5,y_5))
+        imagem_goleiro = pygame.transform.scale(assets[GOLEIRO], (400, 400))
+        imagem_goleiro_rect = imagem_goleiro.get_rect()
+        imagem_goleiro_rect.center = (LARGURA/2, ALTURA/2 + 70)
+        window.blit(imagem_goleiro, (imagem_goleiro_rect))
 
         tempo = pygame.time.get_ticks()
 
@@ -372,8 +374,7 @@ while game:
                     pos_bola = "Direita Superior"
                 if canto_4.collidepoint(pos_mouse):
                     pos_bola = "Direita Inferior"
-                # if canto_5.collidepoint(pos_mouse):
-                #     pos_bola = "Centro"
+
 
                 if pos_bola:
                     pos_gol = random.choice(escolhas_gol)

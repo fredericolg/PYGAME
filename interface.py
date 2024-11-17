@@ -58,6 +58,8 @@ INIT = 1
 CONFIG = 2 
 SELECT = 3 
 PLAY = 4
+GAMEOVER = 5
+QUIT = 6
 
 def muda_estado(novo_estado):
     global state
@@ -73,6 +75,10 @@ botao_back = Botão((LARGURA/2) - 100, (ALTURA * 1/2) + 25, 50, 50, assets[MUSIC
 botao_next = Botão((LARGURA/2) + 35, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_NEXT], 50, 50, assets[MUSICA_NEXT], ação = lambda: music_controller.next_music())
 botao_volta = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
 
+# Botões GAMEOVER
+botao_play_again = Botão((LARGURA/2) - 90, (ALTURA/2) + 15, 200, 100, assets[BOTAO_PLAY_AGAIN], 195, 95, assets[BOTAO_PLAY_AGAIN2], ação = lambda: muda_estado(SELECT))
+botao_quit = Botão((LARGURA/2) - 90, (ALTURA/2) + 110, 200, 185, assets[BOTAO_QUIT], 195, 180, assets[BOTAO_QUIT2], ação = lambda: muda_estado(QUIT))
+
 LOAD_start = None
 LOAD_end = 4000  # Tempo total do carregamento (6 segundos)
 
@@ -80,14 +86,11 @@ msg_start = None
 msg_end = 1000
 
 # ========== Parâmetros para o jogo ===========
-game_over = False
 escolhas_gol = ["Esquerda Superior", "Esquerda Inferior", "Direita Superior", "Direita Inferior"]
-rodadas = 0
 rodadas_max = 5
 msg_gol_duracao = 3000 
 msg_gol = ""
 pontuacao_jog = 0
-pontuacao_gol = 0
 
 # ===== Loop principal =====
 while game:
@@ -218,6 +221,11 @@ while game:
 
     if state == SELECT:
         
+        pontuacao_jog = 0
+        pontuacao_gol = 0
+        rodadas = 0
+        game_over = False
+
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
@@ -426,7 +434,7 @@ while game:
                 if tempo - msg_gol_inicia  >= msg_gol_duracao:
                     msg_gol = ""  
                     if game_over:
-                        state = "game_over"
+                        state = GAMEOVER
             else:
                 font = pygame.font.Font("fonte/Minecraft.ttf", 48)
                 render_msg_gol = font.render(msg_gol, True, (0,0,0))
@@ -435,15 +443,58 @@ while game:
                 if tempo - msg_gol_inicia  >= msg_gol_duracao:
                     msg_gol = ""  
                     if game_over:
-                        state = "game_over"
+                        state = GAMEOVER
 
-    if state == "game_over":
-        aaa = pygame.transform.scale(imagem_fundo, (LARGURA, ALTURA))
-        window.blit(aaa,(0, 0))
+    if state == GAMEOVER:
+        imagem_fundo_pix = pygame.transform.scale(assets[FUNDO_PIX], (LARGURA, ALTURA))
+        window.blit(imagem_fundo_pix, (0, 0))
+        menuGAMEOVER = CreateMenu(window, 836, 506)
+        menuGAMEOVER.draw()
+
+
+        if pontuacao_jog > pontuacao_gol:
+            font = pygame.font.Font("fonte/Minecraft.ttf", 100)
+            font2 = pygame.font.Font("fonte/Minecraft.ttf", 48)
+
+            render_ganhador = font.render('Voce Venceu!', True, (0,0,0))
+            render_plafin = font2.render(f'Placar final: {sigla}: {pontuacao_jog} | GOL: {pontuacao_gol}', True, (0,0,0))
+            window.blit(render_ganhador, (290, 130))
+            window.blit(render_plafin, (285, 220))
+
+        else:
+            font = pygame.font.Font("fonte/Minecraft.ttf", 100)
+            font2 = pygame.font.Font("fonte/Minecraft.ttf", 48)
+
+            render_ganhador = font.render('Voce Perdeu!', True, (0,0,0))
+            render_plafin = font2.render(f'Placar final: {sigla}: {pontuacao_jog} | GOL: {pontuacao_gol}', True, (0,0,0))
+            window.blit(render_ganhador, (290, 130))
+            window.blit(render_plafin, (285, 220))
+
+        # Obtém a posição do mouse para verificar hover
+        mouse_pos = pygame.mouse.get_pos()
+
+        # Atualiza hover dos botões
+        botao_play_again.check_hover(mouse_pos)
+        botao_quit.check_hover(mouse_pos)
+
+        # Desenha os botões
+        botao_play_again.draw(window)
+        botao_quit.draw(window)
+
+        
+        # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 game = False
+            
+            botao_play_again.handle_event(event)
+            botao_quit.handle_event(event)
+    
+    if state == QUIT:
+        game = False
+
+
         
     # ----- Atualiza estado do jogo
     pygame.display.update()  # Mostra o novo frame para o jogador

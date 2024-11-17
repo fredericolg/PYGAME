@@ -39,7 +39,7 @@ def load_assets():
     assets[FUNDO_GOL] = pygame.image.load(os.path.join(DIR_IMG, 'tela fundo gol.jpeg')).convert_alpha()
 
     assets[BOTAO_PLAY] = pygame.image.load(os.path.join(DIR_IMG, 'imagem_play.png')).convert_alpha()
-    assets[BOTAO_PLAY2] = pygame.image.load(os.path.join(DIR_IMG, 'play_cor.png')).convert_alpha()
+    assets[BOTAO_PLAY2] = pygame.image.load(os.path.join(DIR_IMG, 'play_hover.png')).convert_alpha()
     assets[BOTAO_CONFIG] = pygame.image.load(os.path.join(DIR_IMG, 'Botao config2.png')).convert_alpha()
     assets[BOTAO_CONFIG2] = pygame.image.load(os.path.join(DIR_IMG, 'Botao config cor.png')).convert_alpha()
     assets[BOTAO_CONFIRM] = pygame.image.load(os.path.join(DIR_IMG, 'botao confirma.png')).convert_alpha()

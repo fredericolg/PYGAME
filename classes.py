@@ -1,5 +1,7 @@
 import pygame
 import random
+from config import *
+from funcoes import *
 
 class Botão:
     def __init__(self, x, y, width_normal, height_normal, img1, width_hover, height_hover, img2, ação=None):
@@ -98,3 +100,28 @@ class MusicController:
         artista = self.musicas[nome_musica]["artist"]
         volume = self.musicas[nome_musica]["volume"]
         return {"name": nome_musica, "artist": artista, "volume": volume}
+    
+class MenuCONFIG:
+    def __init__(self, window, largura, altura):
+        self.window = window
+        self.largura = largura
+        self.altura = altura
+        self.rectangles = [
+            {"color": PRETO, "largura_r": 636, "altura_r": 436, "offset_x": -18, "offset_y": -18},
+            {"color": LARANJA, "largura_r": 630, "altura_r": 430, "offset_x": -15, "offset_y": -15},
+            {"color": AZUL_MARINHO, "largura_r": 610, "altura_r": 410, "offset_x": -5, "offset_y": -5},
+            {"color": AZUL_CLARO, "largura_r": 600, "altura_r": 400, "offset_x": 0, "offset_y": 0},
+        ]
+
+    def draw(self):
+        for rect in self.rectangles:
+            cria_rect(
+                self.window,
+                rect["color"],
+                self.largura,
+                self.altura,
+                rect["largura_r"],
+                rect["altura_r"],
+                rect["offset_x"],
+                rect["offset_y"]
+            )

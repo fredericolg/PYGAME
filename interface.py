@@ -178,36 +178,8 @@ while game:
         nome_musica = musica_info["name"]
         artista = musica_info["artist"]
 
-
-        # === Retangulo do menu
-            # Retangulo preto (contorno)
-        cor = PRETO
-        LARGURA_r = (636)
-        ALTURA_r = (436)
-        tamanho = (LARGURA_r, ALTURA_r)
-        posicao = (1/4 * LARGURA - 18, 1/5 * ALTURA - 18)
-        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
-            # Retangulo laranja
-        cor = LARANJA
-        LARGURA_r = (630)
-        ALTURA_r = (430)
-        tamanho = (LARGURA_r, ALTURA_r)
-        posicao = (1/4 * LARGURA - 15, 1/5 * ALTURA - 15)
-        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
-            # Retangulo azul marinho
-        cor = AZUL_MARINHO
-        LARGURA_r = (610)
-        ALTURA_r = (410)
-        tamanho = (LARGURA_r, ALTURA_r)
-        posicao = (1/4 * LARGURA - 5, 1/5 * ALTURA - 5)
-        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
-            # Retangulo azul claro
-        cor = AZUL_CLARO
-        LARGURA_r = (ALTURA)
-        ALTURA_r = (400)
-        tamanho = (LARGURA_r, ALTURA_r)
-        posicao = (1/4 * LARGURA, 1/5 * ALTURA)
-        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
+        menu = MenuCONFIG(window, LARGURA, ALTURA)
+        menu.draw()
 
         font = assets[FONTE_PRINCIPAL]
         nome_musica_text = font.render(nome_musica, True, PRETO)

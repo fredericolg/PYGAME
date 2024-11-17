@@ -178,8 +178,8 @@ while game:
         nome_musica = musica_info["name"]
         artista = musica_info["artist"]
 
-        menu = MenuCONFIG(window, LARGURA, ALTURA)
-        menu.draw()
+        menuCONFIG = CreateMenu(window, 636, 436)
+        menuCONFIG.draw()
 
         font = assets[FONTE_PRINCIPAL]
         nome_musica_text = font.render(nome_musica, True, PRETO)
@@ -251,38 +251,9 @@ while game:
             imagem_seta_1 = pygame.transform.scale(imagem_seta, (65, 65))
             window.blit(imagem_seta_1, (0, 0))
 
-
-            # Retangulo preto (contorno)
-        LARGURA_r = 836
-        ALTURA_r = 506
-
-        cor = PRETO
-        LARGURA_r = (LARGURA_r)
-        ALTURA_r = (ALTURA_r)
-        tamanho = (LARGURA_r, ALTURA_r)
-        posicao = (1/6 * LARGURA - 18, 1/7 * ALTURA - 18)
-        pygame.draw.rect(window, cor, (posicao, tamanho))
-            # Retangulo laranja
-        cor = LARANJA
-        LARGURA_r = (LARGURA_r - 6)
-        ALTURA_r = (ALTURA_r - 6)
-        tamanho = (LARGURA_r, ALTURA_r)
-        posicao = (1/6 * LARGURA - 15, 1/7 * ALTURA - 15)
-        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
-            # Retangulo azul marinho
-        cor = AZUL_MARINHO
-        LARGURA_r = (LARGURA_r - 20)
-        ALTURA_r = (ALTURA_r - 20)
-        tamanho = (LARGURA_r, ALTURA_r)
-        posicao = (1/6 * LARGURA - 5, 1/7 * ALTURA - 5)
-        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
-            # Retangulo azul claro
-        cor = AZUL_CLARO
-        LARGURA_r = (LARGURA_r - 10)
-        ALTURA_r = (ALTURA_r - 10)
-        tamanho = (LARGURA_r, ALTURA_r)
-        posicao = (1/6 * LARGURA, 1/7 * ALTURA)
-        retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
+        
+        menuSELECT = CreateMenu(window, 836, 506)
+        menuSELECT.draw()
 
         # === Colocar e escolha dos times
         

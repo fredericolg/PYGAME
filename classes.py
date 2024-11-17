@@ -100,17 +100,17 @@ class MusicController:
         artista = self.musicas[nome_musica]["artist"]
         volume = self.musicas[nome_musica]["volume"]
         return {"name": nome_musica, "artist": artista, "volume": volume}
-    
-class MenuCONFIG:
+
+class CreateMenu:
     def __init__(self, window, largura, altura):
         self.window = window
         self.largura = largura
         self.altura = altura
         self.rectangles = [
-            {"color": PRETO, "largura_r": 636, "altura_r": 436, "offset_x": -18, "offset_y": -18},
-            {"color": LARANJA, "largura_r": 630, "altura_r": 430, "offset_x": -15, "offset_y": -15},
-            {"color": AZUL_MARINHO, "largura_r": 610, "altura_r": 410, "offset_x": -5, "offset_y": -5},
-            {"color": AZUL_CLARO, "largura_r": 600, "altura_r": 400, "offset_x": 0, "offset_y": 0},
+            {"color": PRETO, "largura_r": largura, "altura_r": altura, "offset_x": -18, "offset_y": -18},
+            {"color": LARANJA, "largura_r": largura - 6, "altura_r": altura - 6, "offset_x": -15, "offset_y": -15},
+            {"color": AZUL_MARINHO, "largura_r": largura - 26, "altura_r": altura - 26, "offset_x": -5, "offset_y": -5},
+            {"color": AZUL_CLARO, "largura_r": largura - 36, "altura_r": altura - 36, "offset_x": 0, "offset_y": 0},
         ]
 
     def draw(self):

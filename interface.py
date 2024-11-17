@@ -85,6 +85,9 @@ rodadas_max = 5
 msg_gol_duracao = 3000 
 msg_gol = ""
 pontuacao_jog = 0
+pontuacao_gol = 0
+rodadas = 0
+game_over = ""
 
 # ===== Loop principal =====
 while game:
@@ -403,12 +406,12 @@ while game:
         mouse_pos = pygame.mouse.get_pos()
 
         # Atualiza hover dos botões
-        botao_play_again.check_hover(mouse_pos)
-        botao_quit.check_hover(mouse_pos)
+        assets[BOTAO_PLAY_AGAIN2].check_hover(mouse_pos)
+        assets[BOTAO_QUIT2].check_hover(mouse_pos)
 
         # Desenha os botões
-        botao_play_again.draw(window)
-        botao_quit.draw(window)
+        assets[BOTAO_PLAY_AGAIN].draw(window)
+        assets[BOTAO_QUIT].draw(window)
 
         
         # ----- Trata eventos
@@ -417,8 +420,8 @@ while game:
             if event.type == pygame.QUIT:
                 game = False
             
-            botao_play_again.handle_event(event)
-            botao_quit.handle_event(event)
+            assets[BOTAO_PLAY_AGAIN].handle_event(event)
+            assets[BOTAO_QUIT].handle_event(event)
     
     if state == QUIT:
         game = False

@@ -10,11 +10,14 @@ pygame.init()
 pygame.mixer.init()
 pygame.font.init()
 
+
 # ----- Gera tela principal
 window = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption(TITULO)
-
 assets = load_assets()
+musica_atual = 0
+musica_atual = musica_manager('start', assets[MUSICAS])
+
 imagem_logo = pygame.image.load("imagens\logo2.png").convert_alpha()
 imagem_fundo = pygame.image.load("imagens\Tela.png").convert()
 imagem_fundo_pix = pygame.image.load("imagens/Tela pixelada.jpg").convert()
@@ -42,30 +45,42 @@ imagem_gol = pygame.image.load("imagens/tela fundo gol.jpeg").convert_alpha()
 #========= Texto
 
 class Botão:
-    def __init__(self, x, y, width, height, img1, img2=None, ação=None):
+    def __init__(self, x, y, width_normal, height_normal, img1, width_hover, height_hover, img2, ação=None):
+        self.x = x
+        self.y = y
+        self.width_normal = width_normal
+        self.height_normal = height_normal
+        self.width_hover = width_hover
+        self.height_hover = height_hover
 
-        self.rect = pygame.Rect(x, y, width, height)
-        self.img1 = pygame.transform.scale(img1, (width, height))
-        self.img2 = pygame.transform.scale(img2, (width, height)) if img2 else None
+        # Escala as imagens para os tamanhos correspondentes
+        self.img1 = pygame.transform.scale(img1, (width_normal, height_normal))  # Estado normal
+        self.img2 = pygame.transform.scale(img2, (width_hover, height_hover))    # Estado hover
+
         self.ação = ação
-        self.hovered = False
+        self.hover = False
+
+        # Define o retângulo inicial para o estado normal
+        self.rect = pygame.Rect(x, y, width_normal, height_normal)
 
     def draw(self, surface):
-
-        if self.hovered and self.img2:
-            surface.blit(self.img2, (self.rect.x, self.rect.y))
+        if self.hover:
+            # Calcula o retângulo do estado hover (centralizado no retângulo normal)
+            hover_rect = self.img2.get_rect(center=self.rect.center)
+            surface.blit(self.img2, hover_rect.topleft)
         else:
-            surface.blit(self.img1, (self.rect.x, self.rect.y))
+            # Desenha o botão normal
+            surface.blit(self.img1, self.rect.topleft)
 
     def check_hover(self, mouse_pos):
-
-        self.hovered = self.rect.collidepoint(mouse_pos)
+        # Sempre verifica com base no retângulo do estado normal
+        self.hover = self.rect.collidepoint(mouse_pos)
 
     def handle_event(self, event):
-
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Botão esquerdo do mouse
-            if self.rect.collidepoint(event.pos) and self.ação:
-                self.ação()
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Clique com botão esquerdo
+            if self.rect.collidepoint(event.pos):
+                if self.ação:
+                    self.ação()  # Executa a ação associada ao botão
 
 game = True
 # === tempo de primeira tela (tela de carregamento)
@@ -107,11 +122,25 @@ CONFIG = 2
 SELECT = 3 
 PLAY = 4
 
+def muda_estado(novo_estado):
+    global state
+    state = novo_estado
+
+# Botões INIT
+botao_play = Botão((LARGURA/2) - 90, (ALTURA/2) + 15, 200, 100, assets[BOTAO_PLAY], 195, 95, assets[BOTAO_PLAY2], ação = lambda: muda_estado(SELECT))
+botao_config = Botão((LARGURA/2) - 90, (ALTURA/2) + 110, 200, 185, assets[BOTAO_CONFIG], 345, 335, assets[BOTAO_CONFIG2], ação = lambda: muda_estado(CONFIG))
+
+# Botões CONFIG
+botao_pause = Botão((LARGURA/2) - 35, (ALTURA/2) + 20, 50, 50, assets[MUSICA_STOP], 50, 50, assets[MUSICA_STOP], ação = lambda: musica_manager('pause', assets[MUSICAS], musica_atual))
+botao_back = Botão((LARGURA/2) - 100, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_BACK], 50, 50, assets[MUSICA_BACK], ação = lambda: musica_manager('back', assets[MUSICAS], musica_atual))
+botao_next = Botão((LARGURA/2) + 20, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_NEXT], 50, 50, assets[MUSICA_NEXT], ação = lambda: musica_manager('next', assets[MUSICAS], musica_atual))
+botao_volta = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
+
 LOAD_start = None
-LOAD_end = 6000  # Tempo total do carregamento (6 segundos)
+LOAD_end = 4000  # Tempo total do carregamento (6 segundos)
 
 msg_start = None
-msg_end = 2000
+msg_end = 1000
 
 # ========== Parâmetros para o jogo ===========
 game_over = False
@@ -155,25 +184,27 @@ while game:
         imagem_logo_rect = imagem_logo.get_rect(center=(LARGURA / 2, ALTURA / 2 - 50))
         window.blit(imagem_logo, imagem_logo_rect)
 
-        if progresso >= 1:
-            if msg_start is None:
+        if progresso >= 1:  # Quando o carregamento está completo
+            if msg_start is None:  # Inicializa o início da mensagem
                 msg_start = pygame.time.get_ticks()
+            
+            # Exibe a mensagem
+            hora_do_gol = assets[FONTE_PRINCIPAL].render('ESTA NA HORA DE FAZER GOL!!!', False, PRETO)
+            hora_do_gol_rect = hora_do_gol.get_rect(center=(LARGURA / 2, 520))
+            window.blit(hora_do_gol, hora_do_gol_rect)
 
-        hora_do_gol = assets[FONTE_PRINCIPAL].render('ESTA NA HORA DE FAZER GOL!!!', False, PRETO)
-        hora_do_gol_rect = hora_do_gol.get_rect(center=(LARGURA / 2, 520))
-        window.blit(hora_do_gol, hora_do_gol_rect)
-
-        if progresso >= 1:
+            # Verifica se o tempo de exibição da mensagem passou
             if pygame.time.get_ticks() - msg_start >= msg_end:
+                LOAD_start = None  # Reseta para o próximo uso
+                msg_start = None   # Reseta a mensagem para o próximo ciclo
                 state = INIT
-                LOAD_start = None
-                msg_start_start = None
 
     
     # TELA DE INÍCIO
 
     if state == INIT:
-        window.blit(img_fundo, (0, 0))
+        imagem_fundo = pygame.transform.scale(assets[FUNDO], (LARGURA, ALTURA))
+        window.blit(imagem_fundo, (0, 0))
 
         # ============== Músicas ================= #
         if not pygame.mixer.music.get_busy():       
@@ -188,14 +219,16 @@ while game:
             if variavelmusica == 4:
                 variavelmusica = 0
 
-        # === Cria retangulo para a placa "PLAY" e "CONFIG" mudarem de cor com o mouse
-        cor = BRANCO
-        vertices = [(525, 330), (525, 395), (690, 395), (690, 330)]
-        retangulo_colisao = pygame.draw.polygon(window, cor, vertices, width = 1)
+        # Obtém a posição do mouse para verificar hover
+        mouse_pos = pygame.mouse.get_pos()
 
-        cor = BRANCO
-        vertices = [(550, 450), (550, 550), (670, 550), (670, 450)]
-        retangulo_colisao2 = pygame.draw.polygon(window, cor, vertices, width = 1)
+        # Atualiza hover dos botões
+        botao_play.check_hover(mouse_pos)
+        botao_config.check_hover(mouse_pos)
+
+        # Desenha os botões
+        botao_play.draw(window)
+        botao_config.draw(window)
 
         # coloca o escrito "PENALTY SHOOT OUT" na tela
         imagem_escrito = pygame.transform.scale(imagem_escrito, (500, 500))
@@ -203,50 +236,18 @@ while game:
         imagem_escrito_rect.center=((LARGURA/2),(ALTURA/2)-150)
         window.blit(imagem_escrito, (imagem_escrito_rect))
 
-        # === Muda a cor das placas quando o mouse passa por cima
-        mouse_pos = pygame.mouse.get_pos()
-        if retangulo_colisao.collidepoint(mouse_pos):
-            imagem_play_mouse = pygame.transform.scale(imagem_play_mouse, (345, 485))
-            imagem_play_mouse_rect=imagem_play_mouse.get_rect()
-            imagem_play_mouse_rect.center=((LARGURA/2)+11,(ALTURA/2 + 80))
-            window.blit(imagem_play_mouse, (imagem_play_mouse_rect))
-        else:
-            imagem_play = pygame.transform.scale(imagem_play, (200, 100))
-            imagem_play_rect=imagem_play.get_rect()
-            imagem_play_rect.center=((LARGURA/2)+10,(ALTURA/2 + 65))
-            window.blit(imagem_play, (imagem_play_rect))
-
-        if retangulo_colisao2.collidepoint(mouse_pos):
-            imagem_config_mouse = pygame.transform.scale(imagem_config_mouse, (345, 335))
-            imagem_config_mouse_rect=imagem_config_mouse.get_rect()
-            imagem_config_mouse_rect.center=((LARGURA/2)+10,(ALTURA/2 + 200))
-            window.blit(imagem_config_mouse, (imagem_config_mouse_rect))
-        else:
-            imagem_config = pygame.transform.scale(imagem_config, (200, 185))
-            imagem_config_rect=imagem_config.get_rect()
-            imagem_config_rect.center=((LARGURA/2)+10,(ALTURA/2 + 200))
-            window.blit(imagem_config, (imagem_config_rect))
-
         # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 game = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button==1:
-                    mouse_pos=event.pos # ao clicar com o botao esquerdo, muda de tela
-                    if retangulo_colisao.collidepoint(mouse_pos):
-                        state = SELECT
-                    if retangulo_colisao2.collidepoint(mouse_pos):
-                        state = CONFIG
-
+            
+            botao_play.handle_event(event)
+            botao_config.handle_event(event)
 
     # === TELA CONFIGURAÇÃO
     
     if state == CONFIG:
-        cor = PRETO
-        vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
-        retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
 
         imagem_fundo_pix = pygame.transform.scale(imagem_fundo_pix, (LARGURA, ALTURA))
         window.blit(imagem_fundo_pix, (0, 0))
@@ -281,50 +282,46 @@ while game:
         posicao = (1/4 * LARGURA, 1/5 * ALTURA)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
 
+        nome_musicas = list(assets[MUSICAS].keys())
+        if nome_musicas:
+            # Obtém o nome e o artista da música atual
+            musica_atual_nome = nome_musicas[musica_atual]
+            musica_atual_info = assets[MUSICAS][musica_atual_nome]
+            artista = musica_atual_info["artist"]
 
-        # === Botoes musica
-            # botao pause
-        botao_pause_music = pygame.transform.scale(botao_pause_music, (50, 50))
-        botao_pause_music_rect=botao_pause_music.get_rect()
-        botao_pause_music_rect.center = ((LARGURA * 1/2), (ALTURA * 1/2))
-        window.blit(botao_pause_music, (botao_pause_music_rect))
-            # botao next
-        botao_next_music = pygame.transform.scale(botao_next_music, (50, 50))
-        botao_next_music_rect=botao_next_music.get_rect()
-        botao_next_music_rect.center = ((LARGURA * 1/2) + 65, (ALTURA * 1/2) + 5)
-        window.blit(botao_next_music, (botao_next_music_rect))
-            # botao previous
-        botao_previous_music = pygame.transform.scale(botao_previous_music, (50, 50))
-        botao_previous_music_rect=botao_previous_music.get_rect()
-        botao_previous_music_rect.center = ((LARGURA * 1/2) - 65, (ALTURA * 1/2) + 5)
-        window.blit(botao_previous_music, (botao_previous_music_rect))
-        
+            # Renderiza textos
+            font = assets[FONTE_PRINCIPAL]
+            nome_musica_text = font.render(musica_atual_nome, True, PRETO)
+            artista_text = font.render(artista, True, PRETO)
 
+            # Centraliza e exibe os textos
+            nome_musica_rect = nome_musica_text.get_rect(center=(LARGURA // 2, ALTURA // 2 - 50))
+            artista_rect = artista_text.get_rect(center=(LARGURA // 2, ALTURA // 2))
+            window.blit(nome_musica_text, nome_musica_rect)
+            window.blit(artista_text, artista_rect)
 
-        for nome, musica in dicio_musica.items():
-            if lista_musica[variavelmusica-1] == musica:
-                font = pygame.font.Font("fonte/Minecraft.ttf", 48)
-                nome_musica = font.render(nome, False, PRETO)
-                nome_musica_rect = nome_musica.get_rect()
-                nome_musica_rect.center = ((ALTURA, 220))
-                window.blit(nome_musica, (nome_musica_rect))
-
-
+        # Atualiza o estado hover dos botões
         mouse_pos = pygame.mouse.get_pos()
-        if retangulo_colisao.collidepoint(mouse_pos):
-            imagem_seta_mouse = pygame.transform.scale(imagem_seta_mouse, (65, 65))
-            window.blit(imagem_seta_mouse, (0, 0))
-        else:
-            imagem_seta = pygame.transform.scale(imagem_seta, (65, 65))
-            window.blit(imagem_seta, (0, 0))
+        botao_pause.check_hover(mouse_pos)
+        botao_next.check_hover(mouse_pos)
+        botao_back.check_hover(mouse_pos)
+        botao_volta.check_hover(mouse_pos)
+
+        # Desenha os botões
+        botao_pause.draw(window)
+        botao_next.draw(window)
+        botao_back.draw(window)
+        botao_volta.draw(window)
 
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 game = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if retangulo_colisao.collidepoint(mouse_pos):
-                    state = INIT
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                botao_back.handle_event(event)
+                botao_next.handle_event(event)
+                botao_pause.handle_event(event)
+                botao_volta.handle_event(event)
 
 
     if state == SELECT:
@@ -353,7 +350,7 @@ while game:
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
 
-        window.blit(img_fundo, (0, 0))
+        window.blit(imagem_fundo, (0, 0))
 
         mouse_pos = pygame.mouse.get_pos()
         if retangulo_colisao.collidepoint(mouse_pos):

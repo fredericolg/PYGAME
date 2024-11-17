@@ -1,4 +1,5 @@
 import pygame
+import random
 from config import *
 from assets import *
 
@@ -16,9 +17,15 @@ def desenha_barra(window, progresso, posicao=(200, 450), tamanho=(800, 30), cor_
     # Desenha a borda da barra
     pygame.draw.rect(window, cor_borda, (x, y, width, height), 3)
 
-def controla_musica(ação, musicas, musica_atual):
+def musica_manager(ação, musicas, musica_atual=None):
     lista_musicas = list(musicas.items())  # Converte para lista de tuplas [(nome, {"path": caminho, "artist": artista})]
-    if ação == 'play':
+
+    if ação == 'start':
+        # Escolhe uma música aleatoriamente no início
+        musica_atual = random.randint(0, len(lista_musicas) - 1)
+        pygame.mixer.music.load(lista_musicas[musica_atual][1]['path'])  # Carrega o caminho da música
+        pygame.mixer.music.play()
+    elif ação == 'play':
         if not pygame.mixer.music.get_busy():  # Apenas toca se não estiver tocando
             pygame.mixer.music.play()
     elif ação == 'pause':
@@ -30,7 +37,7 @@ def controla_musica(ação, musicas, musica_atual):
         musica_atual = (musica_atual + 1) % len(lista_musicas)  # Vai para a próxima música
         pygame.mixer.music.load(lista_musicas[musica_atual][1]['path'])  # Carrega o caminho da música
         pygame.mixer.music.play()
-    elif ação == 'previous':
+    elif ação == 'back':
         musica_atual = (musica_atual - 1) % len(lista_musicas)  # Volta para a música anterior
         pygame.mixer.music.load(lista_musicas[musica_atual][1]['path'])  # Carrega o caminho da música
         pygame.mixer.music.play()

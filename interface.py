@@ -358,6 +358,12 @@ while game:
         imagem_goleiro_rect.center = (LARGURA/2, ALTURA/2 + 70)
         window.blit(imagem_goleiro, (imagem_goleiro_rect))
 
+        imagem_bola = pygame.transform.scale(assets[BOLA], (100, 100))
+        imagem_bola_rect = imagem_bola.get_rect()
+        imagem_bola_rect.center = (LARGURA/2, ALTURA/2)
+        window.blit(imagem_bola, (imagem_bola_rect))
+
+
         tempo = pygame.time.get_ticks()
 
         for event in pygame.event.get():
@@ -369,9 +375,9 @@ while game:
                 if canto_1.collidepoint(pos_mouse):
                     pos_bola = "Esquerda Superior"
                 if canto_2.collidepoint(pos_mouse):
-                    pos_bola = "Esquerda Inferior"
-                if canto_3.collidepoint(pos_mouse):
                     pos_bola = "Direita Superior"
+                if canto_3.collidepoint(pos_mouse):
+                    pos_bola = "Esquerda Inferior"
                 if canto_4.collidepoint(pos_mouse):
                     pos_bola = "Direita Inferior"
 

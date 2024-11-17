@@ -8,6 +8,7 @@ FUNDO = 'fundo'
 FUNDO_PIX = 'fundo_pixelado'
 FUNDO_GOL = 'fundo_gol'
 
+BOLA_CHUTE = 'bola_chute'
 BOTAO_PLAY = 'botao_play'
 BOTAO_PLAY2 = 'botao_play_mouse'
 BOTAO_CONFIG = 'botao_config'
@@ -44,6 +45,7 @@ def load_assets():
     assets[BOTAO_CONFIG2] = pygame.image.load(os.path.join(DIR_IMG, 'Botao config cor.png')).convert_alpha()
     assets[BOTAO_CONFIRM] = pygame.image.load(os.path.join(DIR_IMG, 'botao confirma.png')).convert_alpha()
     assets[BOTAO_CONFIRM2] = pygame.image.load(os.path.join(DIR_IMG, 'botao confirma cor.png')).convert_alpha()
+    assets[BOLA_CHUTE] = pygame.image.load(os.path.join(DIR_IMG, 'Bola de futebol p&b.png')).convert_alpha()
 
     assets[SETA_BACK] = pygame.image.load(os.path.join(DIR_IMG, 'seta volta.png')).convert_alpha()
     assets[SETA_BACK2] = pygame.image.load(os.path.join(DIR_IMG, 'seta volta cor.png')).convert_alpha()

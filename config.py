@@ -27,3 +27,5 @@ INIT = 1 # Tela Inicial
 CONFIG = 2 # Tela de Configurações
 SELECT = 3 # Tela de Seleção de Times
 PLAY = 4 # Tela Disputa
+GAMEOVER = 5 # Tela final
+QUIT = 6 # Fecha o jogo

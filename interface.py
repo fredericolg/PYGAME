@@ -20,18 +20,18 @@ music_controller.set_global_volume(0.8)
 music_controller.set_individual_volume("Feet Don't Fail Me Now", 1)
 
 
-imagem_seta = pygame.image.load("imagens/seta volta.png").convert_alpha()
-imagem_seta_mouse = pygame.image.load("imagens/seta volta cor.png").convert_alpha()
-imagem_seta_prox = pygame.image.load("imagens/seta prox.png").convert_alpha()
-imagem_seta_prox_cor = pygame.image.load("imagens/seta prox cor.png").convert_alpha()
-botao_confirma = pygame.image.load("imagens/botao confirma.png").convert_alpha()
-botao_confirma_cor = pygame.image.load("imagens/botao confirma cor.png").convert_alpha()
+imagem_seta = assets[SETA_BACK]
+imagem_seta_mouse = assets[SETA_BACK2]
+imagem_seta_prox = assets[SETA_NEXT]
+imagem_seta_prox_cor = assets[SETA_NEXT2]
+botao_confirma = assets[BOTAO_CONFIRM]
+botao_confirma_cor = assets[BOTAO_CONFIRM2]
 logo_sp = pygame.image.load("imagens/logo sao paulo.png").convert_alpha()
 logo_flu = pygame.image.load("imagens/logo fluminense png.png").convert_alpha()
 logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha()
 logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
-imagem_gol = pygame.image.load("imagens/tela fundo gol.jpeg").convert_alpha()
-bola_chute = pygame.image.load("imagens/Bola de futebol p&b.png").convert_alpha()
+imagem_gol = assets[FUNDO_GOL]
+bola_chute = assets[BOLA_CHUTE]
 
 
 game = True
@@ -46,6 +46,8 @@ INIT = 1
 CONFIG = 2 
 SELECT = 3 
 PLAY = 4
+GAMEOVER = 5
+QUIT = 6
 
 def muda_estado(novo_estado):
     global state
@@ -59,17 +61,7 @@ botao_config = Botão((LARGURA/2) - 90, (ALTURA/2) + 110, 200, 185, assets[BOTAO
 botao_pause = Botão((LARGURA/2) - 35, (ALTURA/2) + 20, 50, 50, assets[MUSICA_STOP], 50, 50, assets[MUSICA_STOP], ação = lambda: music_controller.pause_music())
 botao_back = Botão((LARGURA/2) - 100, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_BACK], 50, 50, assets[MUSICA_BACK], ação = lambda: music_controller.previous_music())
 botao_next = Botão((LARGURA/2) + 35, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_NEXT], 50, 50, assets[MUSICA_NEXT], ação = lambda: music_controller.next_music())
-botao_volta1 = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
-
-# Botões SELECT
-botao_volta2 = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
-botao_confirma = Botão(500, 385, 200, 200, assets[BOTAO_CONFIRM], 200, 200, assets[BOTAO_CONFIRM2], ação = lambda: muda_estado(PLAY))
-seta_esq = Botão(240, 265, 150, 150, assets[SETA_BACK], 150, 150, assets[SETA_BACK2], ação = lambda: time_selector.navegar(-1))
-seta_dir = Botão(810, 265, 150, 150, assets[SETA_NEXT], 150, 150, assets[SETA_NEXT2], ação = lambda: time_selector.navegar(1))
-
-lista_times = list(assets[TIMES].keys())  # Lista de nomes dos times
-tamanho_escudo = (250, 250)  # Define o tamanho global dos escudos
-time_selector = TimeSelector(lista_times, assets, tamanho_escudo)
+botao_volta = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
 
 LOAD_start = None
 LOAD_end = 4000  # Tempo total do carregamento (6 segundos)
@@ -78,14 +70,11 @@ msg_start = None
 msg_end = 1000
 
 # ========== Parâmetros para o jogo ===========
-game_over = False
 escolhas_gol = ["Esquerda Superior", "Esquerda Inferior", "Direita Superior", "Direita Inferior"]
-rodadas = 0
 rodadas_max = 5
 msg_gol_duracao = 3000 
 msg_gol = ""
 pontuacao_jog = 0
-pontuacao_gol = 0
 
 # ===== Loop principal =====
 while game:
@@ -215,14 +204,7 @@ while game:
     
     
     if state == SELECT:
-        window.blit(imagem_fundo, (0, 0))
-
-        mouse_pos = pygame.mouse.get_pos()
-        botao_volta2.check_hover(mouse_pos)
-        seta_esq.check_hover(mouse_pos)
-        seta_dir.check_hover(mouse_pos)
-        botao_confirma.check_hover(mouse_pos)
-
+        
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
@@ -263,36 +245,38 @@ while game:
         larg = 170
         alt = 106
 
+        # == Define canto superior esquerdo
         x_1 = 340
         y_1 = 170
         canto_1 = pygame.Rect(x_1, y_1, larg, alt)
         bola_chute = pygame.transform.scale(bola_chute, (100, 100))
         window.blit(bola_chute, (x_1,y_1))
 
+        # == Define canto superior direito
         x_2 = 690
         y_2 = 170
         canto_2 = pygame.Rect(x_2, y_2, larg, alt)
         bola_chute = pygame.transform.scale(bola_chute, (100, 100))
         window.blit(bola_chute, (x_2+70,y_2))
 
+        # == Define canto inferior esquerdo
         x_3 = 340
         y_3 = 382
         canto_3 = pygame.Rect(x_3, y_3, larg, alt)
         bola_chute = pygame.transform.scale(bola_chute, (100, 100))
         window.blit(bola_chute, (x_3,y_3))
 
+        # == Define canto inferior direito
         x_4 = 690
         y_4 = 382
         canto_4 = pygame.Rect(x_4, y_4, larg, alt)
         bola_chute = pygame.transform.scale(bola_chute, (100, 100))
         window.blit(bola_chute, (x_4+70,y_4))
 
-        # x_5 = 510
-        # y_5 = 276
-        # larg_5 = 180
-        # canto_5 = pygame.Rect(x_5, y_5, larg_5, alt)
-        # bola_chute = pygame.transform.scale(bola_chute, (100, 100))
-        # window.blit(bola_chute, (x_5,y_5))
+        imagem_goleiro = pygame.transform.scale(assets[GOLEIRO], (400, 400))
+        imagem_goleiro_rect = imagem_goleiro.get_rect()
+        imagem_goleiro_rect.center = (LARGURA/2, ALTURA/2 + 70)
+        window.blit(imagem_goleiro, (imagem_goleiro_rect))
 
         tempo = pygame.time.get_ticks()
 
@@ -310,8 +294,7 @@ while game:
                     pos_bola = "Direita Superior"
                 if canto_4.collidepoint(pos_mouse):
                     pos_bola = "Direita Inferior"
-                # if canto_5.collidepoint(pos_mouse):
-                #     pos_bola = "Centro"
+
 
                 if pos_bola:
                     pos_gol = random.choice(escolhas_gol)
@@ -357,7 +340,7 @@ while game:
                 if tempo - msg_gol_inicia  >= msg_gol_duracao:
                     msg_gol = ""  
                     if game_over:
-                        state = "game_over"
+                        state = GAMEOVER
             else:
                 font = pygame.font.Font("fonte/Minecraft.ttf", 48)
                 render_msg_gol = font.render(msg_gol, True, (0,0,0))
@@ -366,15 +349,58 @@ while game:
                 if tempo - msg_gol_inicia  >= msg_gol_duracao:
                     msg_gol = ""  
                     if game_over:
-                        state = "game_over"
+                        state = GAMEOVER
 
-    if state == "game_over":
-        aaa = pygame.transform.scale(imagem_fundo, (LARGURA, ALTURA))
-        window.blit(aaa,(0, 0))
+    if state == GAMEOVER:
+        imagem_fundo_pix = pygame.transform.scale(assets[FUNDO_PIX], (LARGURA, ALTURA))
+        window.blit(imagem_fundo_pix, (0, 0))
+        menuGAMEOVER = CreateMenu(window, 836, 506)
+        menuGAMEOVER.draw()
+
+
+        if pontuacao_jog > pontuacao_gol:
+            font = pygame.font.Font("fonte/Minecraft.ttf", 100)
+            font2 = pygame.font.Font("fonte/Minecraft.ttf", 48)
+
+            render_ganhador = font.render('Voce Venceu!', True, (0,0,0))
+            render_plafin = font2.render(f'Placar final: {sigla}: {pontuacao_jog} | GOL: {pontuacao_gol}', True, (0,0,0))
+            window.blit(render_ganhador, (290, 130))
+            window.blit(render_plafin, (285, 220))
+
+        else:
+            font = pygame.font.Font("fonte/Minecraft.ttf", 100)
+            font2 = pygame.font.Font("fonte/Minecraft.ttf", 48)
+
+            render_ganhador = font.render('Voce Perdeu!', True, (0,0,0))
+            render_plafin = font2.render(f'Placar final: {sigla}: {pontuacao_jog} | GOL: {pontuacao_gol}', True, (0,0,0))
+            window.blit(render_ganhador, (290, 130))
+            window.blit(render_plafin, (285, 220))
+
+        # Obtém a posição do mouse para verificar hover
+        mouse_pos = pygame.mouse.get_pos()
+
+        # Atualiza hover dos botões
+        botao_play_again.check_hover(mouse_pos)
+        botao_quit.check_hover(mouse_pos)
+
+        # Desenha os botões
+        botao_play_again.draw(window)
+        botao_quit.draw(window)
+
+        
+        # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 game = False
+            
+            botao_play_again.handle_event(event)
+            botao_quit.handle_event(event)
+    
+    if state == QUIT:
+        game = False
+
+
         
     # ----- Atualiza estado do jogo
     pygame.display.update()  # Mostra o novo frame para o jogador

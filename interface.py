@@ -113,13 +113,16 @@ LOAD_end = 6000  # Tempo total do carregamento (6 segundos)
 msg_start = None
 msg_end = 2000
 
+# ========== Parâmetros para o jogo ===========
 game_over = False
-pontuacao = 0
 escolhas_gol = ["Esquerda Superior", "Esquerda Inferior", "Centro", "Direita Superior", "Direita Inferior"]
 rodadas = 0
 rodadas_max = 5
 msg_gol_duracao = 3000 
 msg_gol = ""
+pontuacao_jog = 0
+pontuacao_gol = 0
+
 # ===== Loop principal =====
 while game:
     clock.tick(FPS)
@@ -170,7 +173,7 @@ while game:
     # TELA DE INÍCIO
 
     if state == INIT:
-        window.blit(assets[FUNDO], (0, 0))
+        window.blit(img_fundo, (0, 0))
 
         # ============== Músicas ================= #
         if not pygame.mixer.music.get_busy():       
@@ -350,7 +353,7 @@ while game:
         vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
         retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
 
-        window.blit(imagem_fundo, (0, 0))
+        window.blit(img_fundo, (0, 0))
 
         mouse_pos = pygame.mouse.get_pos()
         if retangulo_colisao.collidepoint(mouse_pos):
@@ -443,6 +446,16 @@ while game:
         
         time_atual = lista_times[i]
 
+        if i == 0:
+            sigla = "SAO"
+        if i == 1:
+            sigla = "FLU"
+        if i == 2:
+            sigla = "DOR"
+        if i == 3:
+            sigla = "MIA"
+
+
     if state == PLAY:
         fundo_gol = pygame.transform.scale(imagem_gol, (LARGURA, ALTURA))
         window.blit(fundo_gol,(0, 0))
@@ -495,10 +508,11 @@ while game:
                     pos_gol = random.choice(escolhas_gol)
 
                     if pos_bola != pos_gol:
-                        pontuacao += 1
+                        pontuacao_jog += 1
                         msg_gol = "GOOOOOOOOOOOOOOOOL!!"
 
                     else:
+                        pontuacao_gol += 1
                         msg_gol = "DEFEEEEEEEEEEEEESA!!"
                     
                     msg_gol_inicia = tempo
@@ -508,6 +522,23 @@ while game:
                     if rodadas == rodadas_max:
                         game_over = True
         
+
+
+        cor = AZUL
+        LARGURA_pla = (150)
+        ALTURA_pla = (85)
+        tamanho_pla = (LARGURA_pla, ALTURA_pla)
+        posicao_pla = (10, 10)
+        placar = pygame.draw.rect(window, cor, (posicao_pla, tamanho_pla))
+        font = pygame.font.Font("fonte/Minecraft.ttf", 36)
+        render_pont_jog = font.render(f'{sigla}: {pontuacao_jog}', True, (255,255,255))
+        render_pont_gol = font.render(f'GOL: {pontuacao_gol}', True, (255,255,255) )
+        window.blit(render_pont_jog, (20, 20))
+        window.blit(render_pont_gol, (20, 60))
+
+
+
+
         if msg_gol:
             if msg_gol == "GOOOOOOOOOOOOOOOOL!!":
                 font = pygame.font.Font("fonte/Minecraft.ttf", 48)

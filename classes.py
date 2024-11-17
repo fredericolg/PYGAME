@@ -125,3 +125,30 @@ class CreateMenu:
                 rect["offset_x"],
                 rect["offset_y"]
             )
+
+class TimeSelector:
+    def __init__(self, lista_times, assets, tamanho_escudo):
+        self.lista_times = lista_times
+        self.assets = assets
+        self.tamanho_escudo = tamanho_escudo
+        self.indice_time = 0  # Índice inicial do time selecionado
+        self.nome_time = self.lista_times[self.indice_time]
+        self.escudo_time = self.assets[TIMES][self.nome_time]
+
+    def navegar(self, direcao):
+        # Chama a lógica de `atualiza_time` para calcular o novo índice e obter os valores
+        self.indice_time, self.nome_time, self.escudo_time = atualiza_time(
+            direcao, self.lista_times, self.assets, self.indice_time
+        )
+
+    def draw(self, window):
+        # Redimensiona o escudo
+        escudo_escalado = pygame.transform.scale(self.escudo_time, self.tamanho_escudo)
+        escudo_rect = escudo_escalado.get_rect(center=(LARGURA // 2, ALTURA // 2 - 50))
+        window.blit(escudo_escalado, escudo_rect)
+
+        # Exibe o nome do time abaixo do escudo
+        fonte = self.assets[FONTE_PRINCIPAL]
+        texto_nome = fonte.render(self.nome_time, True, PRETO)  # Preto
+        texto_rect = texto_nome.get_rect(center=(LARGURA // 2, ALTURA // 2 + 110))
+        window.blit(texto_nome, texto_rect)

@@ -412,12 +412,12 @@ while game:
         mouse_pos = pygame.mouse.get_pos()
 
         # Atualiza hover dos botões
-        assets[BOTAO_PLAY_AGAIN2].check_hover(mouse_pos)
-        assets[BOTAO_QUIT2].check_hover(mouse_pos)
+        botao_play_again.check_hover(mouse_pos)
+        botao_quit.check_hover(mouse_pos)
 
         # Desenha os botões
-        assets[BOTAO_PLAY_AGAIN].draw(window)
-        assets[BOTAO_QUIT].draw(window)
+        botao_play_again.draw(window)
+        botao_quit.draw(window)
 
         
         # ----- Trata eventos
@@ -426,8 +426,8 @@ while game:
             if event.type == pygame.QUIT:
                 game = False
             
-            assets[BOTAO_PLAY_AGAIN].handle_event(event)
-            assets[BOTAO_QUIT].handle_event(event)
+            botao_play_again.handle_event(event)
+            botao_quit.handle_event(event)
     
     if state == QUIT:
         game = False

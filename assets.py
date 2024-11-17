@@ -73,8 +73,8 @@ def load_assets():
     
 
     assets[TIMES] = {
-        "São Paulo FC": pygame.image.load(os.path.join(DIR_IMG, 'logo sao paulo.png')).convert_alpha(),
-        "Fluminense": pygame.image.load(os.path.join(DIR_IMG, 'logo fluminense png.png')).convert_alpha(),
+        "Sao Paulo FC": pygame.image.load(os.path.join(DIR_IMG, 'logo sao paulo.png')).convert_alpha(),
+        "Fluminense FC": pygame.image.load(os.path.join(DIR_IMG, 'logo fluminense png.png')).convert_alpha(),
         "Borussia Dortmund": pygame.image.load(os.path.join(DIR_IMG, 'logo borussia png.png')).convert_alpha(),
         "Inter Miami": pygame.image.load(os.path.join(DIR_IMG, 'logo inter miami png.png')).convert_alpha(),
     }

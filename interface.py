@@ -38,18 +38,6 @@ game = True
 # === tempo de primeira tela (tela de carregamento)
 state = LOAD
 
-# === imagem times de futebol
-i = 0
-lista_times = [logo_sp, logo_flu, logo_borussia, logo_inter]
-dicio_times = {
-
-    "São Paulo FC":lista_times[0], 
-    "Fluminense":lista_times[1],
-    "Borussia":lista_times[2],
-    "Inter Miami":lista_times[3]
-
-    }
-
 # def game_screen(window):
 clock = pygame.time.Clock()
 
@@ -74,10 +62,6 @@ botao_pause = Botão((LARGURA/2) - 35, (ALTURA/2) + 20, 50, 50, assets[MUSICA_ST
 botao_back = Botão((LARGURA/2) - 100, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_BACK], 50, 50, assets[MUSICA_BACK], ação = lambda: music_controller.previous_music())
 botao_next = Botão((LARGURA/2) + 35, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_NEXT], 50, 50, assets[MUSICA_NEXT], ação = lambda: music_controller.next_music())
 botao_volta = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
-
-# Botões GAMEOVER
-botao_play_again = Botão((LARGURA/2) - 90, (ALTURA/2) + 15, 200, 100, assets[BOTAO_PLAY_AGAIN], 195, 95, assets[BOTAO_PLAY_AGAIN2], ação = lambda: muda_estado(SELECT))
-botao_quit = Botão((LARGURA/2) - 90, (ALTURA/2) + 110, 200, 185, assets[BOTAO_QUIT], 195, 180, assets[BOTAO_QUIT2], ação = lambda: muda_estado(QUIT))
 
 LOAD_start = None
 LOAD_end = 4000  # Tempo total do carregamento (6 segundos)
@@ -200,13 +184,13 @@ while game:
         botao_pause.check_hover(mouse_pos)
         botao_next.check_hover(mouse_pos)
         botao_back.check_hover(mouse_pos)
-        botao_volta.check_hover(mouse_pos)
+        botao_volta1.check_hover(mouse_pos)
 
         # Desenha os botões
         botao_pause.draw(window)
         botao_next.draw(window)
         botao_back.draw(window)
-        botao_volta.draw(window)
+        botao_volta1.draw(window)
 
         for event in pygame.event.get():
             # ----- Verifica consequências
@@ -216,114 +200,42 @@ while game:
                 botao_back.handle_event(event)
                 botao_next.handle_event(event)
                 botao_pause.handle_event(event)
-                botao_volta.handle_event(event)
-
-
+                botao_volta1.handle_event(event)
+    
+    
     if state == SELECT:
         
-        pontuacao_jog = 0
-        pontuacao_gol = 0
-        rodadas = 0
-        game_over = False
-
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 game = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if retangulo_colisao.collidepoint(mouse_pos):
-                    state = INIT
-                if retangulo_colisao_prox.collidepoint(mouse_pos):
-                    if i < 3:
-                        i += 1
-                    else:
-                        i = 0
-                if retangulo_colisao_ant.collidepoint(mouse_pos):
-                    if i > 0:
-                        i -= 1
-                    else:
-                        i = 3
-                if botao_confirma_rect.collidepoint(mouse_pos):
-                    state = PLAY
-        
-        cor = PRETO
-        vertices = [(20, 15), (20, 45), (55, 45), (55, 15)]
-        retangulo_colisao = pygame.draw.polygon(window, cor, vertices)
+            
+            botao_volta2.handle_event(event)
+            botao_confirma.handle_event(event)
+            seta_esq.handle_event(event)
+            seta_dir.handle_event(event)
 
-        window.blit(imagem_fundo, (0, 0))
-        
-        # Seta para voltar para o menu
-        mouse_pos = pygame.mouse.get_pos()
-        if retangulo_colisao.collidepoint(mouse_pos):
-            imagem_seta_mouse = pygame.transform.scale(imagem_seta_mouse, (65, 65))
-            window.blit(imagem_seta_mouse, (0, 0))
-        else:
-            imagem_seta_1 = pygame.transform.scale(imagem_seta, (65, 65))
-            window.blit(imagem_seta_1, (0, 0))
-
-        
         menuSELECT = CreateMenu(window, 836, 506)
         menuSELECT.draw()
 
-        # === Colocar e escolha dos times
-        
-        time = pygame.transform.scale(lista_times[i], (250, 250))
-        time_rect=time.get_rect()
-        time_rect.center = ((LARGURA * 1/2), (ALTURA * 1/2))
-        window.blit(time, (time_rect))
+        botao_volta2.draw(window)
+        seta_esq.draw(window)
+        seta_dir.draw(window)
+        botao_confirma.draw(window)
+        time_selector.draw(window)
 
-        # Passar para o próximo time
+        time_select = time_selector.acha_ultimo()
 
-        cor = PRETO
-        retangulo_colisao_prox = pygame.draw.rect(window, cor, (730, 360, 75, 40))
-        #print(mouse_pos)
+        # Mapeia nomes dos times para suas siglas
+        siglas_times = {
+            "Sao Paulo FC": "SAO",
+            "Fluminense FC": "FLU",
+            "Borussia Dortmund": "DOR",
+            "Inter Miami": "MIA"
+        }
 
-        if retangulo_colisao_prox.collidepoint(mouse_pos):
-            imagem_seta_prox_cor = pygame.transform.scale(imagem_seta_prox_cor, (150, 150))
-            window.blit(imagem_seta_prox_cor, (700, 300))
-        else:
-            imagem_seta_prox = pygame.transform.scale(imagem_seta_prox, (150, 150))
-            window.blit(imagem_seta_prox, (700, 300))
-
-        # Voltar o time
-
-        retangulo_colisao_ant = pygame.draw.rect(window, cor, (395, 360, 75, 40))
-        if retangulo_colisao_ant.collidepoint(mouse_pos):
-            imagem_seta_mouse = pygame.transform.scale(imagem_seta_mouse, (150, 150))
-            window.blit(imagem_seta_mouse, (350, 298))
-        else:
-            imagem_seta_2 = pygame.transform.scale(imagem_seta, (150, 150))
-            window.blit(imagem_seta_2, (350, 300))
-
-        # Confirma o time
-            # cria o botão de confirmar
-        botao_confirma = pygame.transform.scale(botao_confirma, (200, 200))
-        botao_confirma_rect = botao_confirma.get_rect()
-        botao_confirma_rect.center = ((ALTURA, 500))
-        window.blit(botao_confirma, (botao_confirma_rect))
-        
-        if botao_confirma_rect.collidepoint(mouse_pos):
-            botao_confirma_cor = pygame.transform.scale(botao_confirma_cor, (200, 200))
-            botao_confirma_cor_rect = botao_confirma_cor.get_rect()
-            botao_confirma_cor_rect.center = ((ALTURA, 500))
-            window.blit(botao_confirma_cor, (botao_confirma_cor_rect))
-        else:
-            botao_confirma = pygame.transform.scale(botao_confirma, (200, 200))
-            botao_confirma_rect = botao_confirma.get_rect()
-            botao_confirma_rect.center = ((ALTURA, 500))
-            window.blit(botao_confirma, (botao_confirma_rect))
-        
-        time_atual = lista_times[i]
-
-        if i == 0:
-            sigla = "SAO"
-        if i == 1:
-            sigla = "FLU"
-        if i == 2:
-            sigla = "DOR"
-        if i == 3:
-            sigla = "MIA"
-
+        # Define a sigla com segurança
+        sigla = siglas_times.get(time_select, "N/A")
 
     if state == PLAY:
         fundo_gol = pygame.transform.scale(imagem_gol, (LARGURA, ALTURA))

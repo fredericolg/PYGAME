@@ -21,3 +21,14 @@ def cria_rect(window, color, largura, altura, largura_r, altura_r, offset_x=0, o
     tamanho = (largura_r, altura_r)  # Tamanho do retângulo
     posicao = (1 / 4 * largura + offset_x, 1 / 5 * altura + offset_y)  # Posição do retângulo
     pygame.draw.rect(window, color, (*posicao, *tamanho))
+
+def atualiza_time(direcao, lista_times, assets, indice_atual):
+    # Calcula o novo índice (itera ciclicamente)
+    novo_indice = (indice_atual + direcao) % len(lista_times)
+
+    # Obtém o nome e o logotipo do time correspondente
+    nome_time = lista_times[novo_indice]
+    escudo_time = assets[TIMES][nome_time]
+
+    # Retorna o novo índice, o nome e o escudo
+    return novo_indice, nome_time, escudo_time

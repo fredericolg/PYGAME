@@ -69,7 +69,7 @@ def load_assets():
     "Wavin Flags": {"path": os.path.join(DIR_WAV, '2.mp3'), "artist": "K'naan"},
     "Miss Alissa": {"path": os.path.join(DIR_WAV, '3.mp3'), "artist": "Eagles of Death Metal"},
     "My Type": {"path": os.path.join(DIR_WAV, '4.mp3'), "artist": "SAINT MOTEL"},
-    "We Are One": {"path": os.path.join(DIR_WAV, '5.mp3'), "artist": "Pitbull feat. Jennifer Lopez & Claudia Leitte"},
+    "We Are One": {"path": os.path.join(DIR_WAV, '5.mp3'), "artist": "Pitbull ft. J-Lo & Claudia Leitte"},
 }
 
     return assets

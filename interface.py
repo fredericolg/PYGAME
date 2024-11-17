@@ -5,19 +5,20 @@ import random
 from config import *
 from assets import *
 from funcoes import *
+from classes import *
 
 pygame.init()
-pygame.mixer.init()
 pygame.font.init()
-
+pygame.mixer.init()
 
 # ----- Gera tela principal
 window = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption(TITULO)
 assets = load_assets()
+music_controller = MusicController(assets[MUSICAS])
+music_controller.set_global_volume(0.8)
+music_controller.set_individual_volume("Feet Don't Fail Me Now", 1)
 
-musica_atual = 0  # Inicialize o índice da música atual
-musica_atual = musica_manager('start', assets[MUSICAS], 0)  # Inicia com uma música aleatória
 
 imagem_seta = pygame.image.load("imagens/seta volta.png").convert_alpha()
 imagem_seta_mouse = pygame.image.load("imagens/seta volta cor.png").convert_alpha()
@@ -31,46 +32,6 @@ logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha
 logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
 imagem_gol = pygame.image.load("imagens/tela fundo gol.jpeg").convert_alpha()
 
-
-#========= Texto
-
-class Botão:
-    def __init__(self, x, y, width_normal, height_normal, img1, width_hover, height_hover, img2, ação=None):
-        self.x = x
-        self.y = y
-        self.width_normal = width_normal
-        self.height_normal = height_normal
-        self.width_hover = width_hover
-        self.height_hover = height_hover
-
-        # Escala as imagens para os tamanhos correspondentes
-        self.img1 = pygame.transform.scale(img1, (width_normal, height_normal))  # Estado normal
-        self.img2 = pygame.transform.scale(img2, (width_hover, height_hover))    # Estado hover
-
-        self.ação = ação
-        self.hover = False
-
-        # Define o retângulo inicial para o estado normal
-        self.rect = pygame.Rect(x, y, width_normal, height_normal)
-
-    def draw(self, surface):
-        if self.hover:
-            # Calcula o retângulo do estado hover (centralizado no retângulo normal)
-            hover_rect = self.img2.get_rect(center=self.rect.center)
-            surface.blit(self.img2, hover_rect.topleft)
-        else:
-            # Desenha o botão normal
-            surface.blit(self.img1, self.rect.topleft)
-
-    def check_hover(self, mouse_pos):
-        # Sempre verifica com base no retângulo do estado normal
-        self.hover = self.rect.collidepoint(mouse_pos)
-
-    def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Clique com botão esquerdo
-            if self.rect.collidepoint(event.pos):
-                if self.ação:
-                    self.ação()  # Executa a ação associada ao botão
 
 game = True
 # === tempo de primeira tela (tela de carregamento)
@@ -87,21 +48,6 @@ dicio_times = {
     "Inter Miami":lista_times[3]
 
     }
-
-# ================= Cria uma lista com as músicas para depois tocar ============= #
-lista_musica = ['audios/1.mp3', 'audios/2.mp3', 'audios/3.mp3', 'audios/4.mp3', 'audios/5.mp3']
-dicio_musica = {
-
-    "Feet don't fail me now":'audios/1.mp3',
-    "Wavin flags":'audios/2.mp3',
-    "Miss Alissa":'audios/3.mp3',
-    "My type":'audios/4.mp3',
-    "We are one":'audios/5.mp3'
-
-}
-variavelmusica = random.randint(0,4) 
-MUSIC_END = pygame.USEREVENT+1
-pygame.mixer.music.set_endevent(MUSIC_END)
 
 # def game_screen(window):
 clock = pygame.time.Clock()
@@ -121,9 +67,9 @@ botao_play = Botão((LARGURA/2) - 90, (ALTURA/2) + 15, 200, 100, assets[BOTAO_PL
 botao_config = Botão((LARGURA/2) - 90, (ALTURA/2) + 110, 200, 185, assets[BOTAO_CONFIG], 345, 335, assets[BOTAO_CONFIG2], ação = lambda: muda_estado(CONFIG))
 
 # Botões CONFIG
-botao_pause = Botão((LARGURA/2) - 35, (ALTURA/2) + 20, 50, 50, assets[MUSICA_STOP], 50, 50, assets[MUSICA_STOP], ação = lambda: musica_manager('pause', assets[MUSICAS], musica_atual))
-botao_back = Botão((LARGURA/2) - 100, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_BACK], 50, 50, assets[MUSICA_BACK], ação = lambda: musica_manager('previous', assets[MUSICAS], musica_atual))
-botao_next = Botão((LARGURA/2) + 35, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_NEXT], 50, 50, assets[MUSICA_NEXT], ação = lambda: musica_manager('next', assets[MUSICAS], musica_atual))
+botao_pause = Botão((LARGURA/2) - 35, (ALTURA/2) + 20, 50, 50, assets[MUSICA_STOP], 50, 50, assets[MUSICA_STOP], ação = lambda: music_controller.pause_music())
+botao_back = Botão((LARGURA/2) - 100, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_BACK], 50, 50, assets[MUSICA_BACK], ação = lambda: music_controller.previous_music())
+botao_next = Botão((LARGURA/2) + 35, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_NEXT], 50, 50, assets[MUSICA_NEXT], ação = lambda: music_controller.next_music())
 botao_volta = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
 
 LOAD_start = None
@@ -196,19 +142,6 @@ while game:
         imagem_fundo = pygame.transform.scale(assets[FUNDO], (LARGURA, ALTURA))
         window.blit(imagem_fundo, (0, 0))
 
-        # ============== Músicas ================= #
-        if not pygame.mixer.music.get_busy():       
-            pygame.mixer.music.load(lista_musica[variavelmusica])
-            pygame.mixer.music.set_volume(0.2)
-            if variavelmusica == 1:
-                pygame.mixer.music.play(0, start=11)
-                variavelmusica += 1
-            if variavelmusica != 1 and variavelmusica != 4:
-                pygame.mixer.music.play(0, start=0.1)
-                variavelmusica += 1
-            if variavelmusica == 4:
-                variavelmusica = 0
-
         # Obtém a posição do mouse para verificar hover
         mouse_pos = pygame.mouse.get_pos()
 
@@ -238,9 +171,13 @@ while game:
     # === TELA CONFIGURAÇÃO
     
     if state == CONFIG:
-
         imagem_fundo_pix = pygame.transform.scale(assets[FUNDO_PIX], (LARGURA, ALTURA))
         window.blit(imagem_fundo_pix, (0, 0))
+
+        musica_info = music_controller.get_current_music_info()
+        nome_musica = musica_info["name"]
+        artista = musica_info["artist"]
+
 
         # === Retangulo do menu
             # Retangulo preto (contorno)
@@ -272,23 +209,15 @@ while game:
         posicao = (1/4 * LARGURA, 1/5 * ALTURA)
         retangulo_menu = pygame.draw.rect(window, cor, (posicao, tamanho))
 
-        nome_musicas = list(assets[MUSICAS].keys())  # Lista de nomes das músicas
-        if nome_musicas:
-            # Recalcula o nome e o artista da música atual com base no índice global
-            musica_atual_nome = nome_musicas[musica_atual]
-            musica_atual_info = assets[MUSICAS][musica_atual_nome]
-            artista = musica_atual_info["artist"]
+        font = assets[FONTE_PRINCIPAL]
+        nome_musica_text = font.render(nome_musica, True, PRETO)
+        artista_text = font.render(artista, True, PRETO)
 
-            # Renderiza os textos do nome da música e do artista
-            font = assets[FONTE_PRINCIPAL]
-            nome_musica_text = font.render(musica_atual_nome, True, PRETO)
-            artista_text = font.render(artista, True, PRETO)
-
-            # Centraliza e exibe os textos
-            nome_musica_rect = nome_musica_text.get_rect(center=(LARGURA // 2, ALTURA // 2 - 50))
-            artista_rect = artista_text.get_rect(center=(LARGURA // 2, ALTURA // 2))
-            window.blit(nome_musica_text, nome_musica_rect)
-            window.blit(artista_text, artista_rect)
+        # Centraliza e exibe os textos
+        nome_musica_rect = nome_musica_text.get_rect(center=(LARGURA // 2, ALTURA // 2 - 50))
+        artista_rect = artista_text.get_rect(center=(LARGURA // 2, ALTURA // 2))
+        window.blit(nome_musica_text, nome_musica_rect)
+        window.blit(artista_text, artista_rect)
 
         # Atualiza o estado hover dos botões
         mouse_pos = pygame.mouse.get_pos()

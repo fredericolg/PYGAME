@@ -297,7 +297,7 @@ while game:
 
         imagem_bola = pygame.transform.scale(assets[BOLA], (100, 100))
         imagem_bola_rect = imagem_bola.get_rect()
-        imagem_bola_rect.center = (LARGURA/2, ALTURA/2)
+        imagem_bola_rect.center = (LARGURA/2, ALTURA/2 + 250)
         window.blit(imagem_bola, (imagem_bola_rect))
 
 

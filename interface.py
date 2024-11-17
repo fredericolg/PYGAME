@@ -242,6 +242,18 @@ while game:
         botao_confirma.draw(window)
         time_selector.draw(window)
 
+        time_select = time_selector.acha_ultimo()
+
+        # Mapeia nomes dos times para suas siglas
+        siglas_times = {
+            "Sao Paulo FC": "SAO",
+            "Fluminense FC": "FLU",
+            "Borussia Dortmund": "DOR",
+            "Inter Miami": "MIA"
+        }
+
+        # Define a sigla com segurança
+        sigla = siglas_times.get(time_select, "N/A")
 
     if state == PLAY:
         fundo_gol = pygame.transform.scale(imagem_gol, (LARGURA, ALTURA))

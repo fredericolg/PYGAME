@@ -152,3 +152,6 @@ class TimeSelector:
         texto_nome = fonte.render(self.nome_time, True, PRETO)  # Preto
         texto_rect = texto_nome.get_rect(center=(LARGURA // 2, ALTURA // 2 + 110))
         window.blit(texto_nome, texto_rect)
+
+    def acha_ultimo(self):
+        return self.nome_time

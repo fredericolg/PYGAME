@@ -16,6 +16,10 @@ BOTAO_CONFIG2 = 'botao_config_mouse'
 BOTAO_CONFIRM = 'botao_confirma'
 BOTAO_CONFIRM2 = 'botao_confirma_mouse'
 GOLEIRO = "imagem_goleiro"
+BOTAO_PLAY_AGAIN = 'botao_play_again'
+BOTAO_PLAY_AGAIN2 = 'botao_play_again_mouse'
+BOTAO_QUIT = 'botao_quit'
+BOTAO_QUIT2 = 'botao_quit_mouse'
 
 SETA_BACK = 'seta_voltar'
 SETA_BACK2 = 'seta_voltar_mouse'
@@ -48,6 +52,10 @@ def load_assets():
     assets[BOTAO_CONFIRM2] = pygame.image.load(os.path.join(DIR_IMG, 'botao confirma cor.png')).convert_alpha()
     assets[BOLA_CHUTE] = pygame.image.load(os.path.join(DIR_IMG, 'Bola de futebol p&b.png')).convert_alpha()
     assets[GOLEIRO] = pygame.image.load(os.path.join(DIR_IMG, 'goleiro pixelado.png')).convert_alpha()
+    assets[BOTAO_PLAY_AGAIN] = pygame.image.load(os.path.join(DIR_IMG, 'botao play again.png')).convert_alpha()
+    assets[BOTAO_PLAY_AGAIN2] = pygame.image.load(os.path.join(DIR_IMG, 'botao play again cor.png')).convert_alpha()
+    assets[BOTAO_QUIT] = pygame.image.load(os.path.join(DIR_IMG, 'botao quit.png')).convert_alpha()
+    assets[BOTAO_QUIT2] = pygame.image.load(os.path.join(DIR_IMG, 'botao quit cor.png')).convert_alpha()    
 
     assets[SETA_BACK] = pygame.image.load(os.path.join(DIR_IMG, 'seta volta.png')).convert_alpha()
     assets[SETA_BACK2] = pygame.image.load(os.path.join(DIR_IMG, 'seta volta cor.png')).convert_alpha()

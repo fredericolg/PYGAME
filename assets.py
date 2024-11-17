@@ -65,11 +65,11 @@ def load_assets():
     assets[FONTE_PRINCIPAL] = pygame.font.Font(os.path.join(DIR_FNT, 'Minecraft.ttf'), 48)
 
     assets[MUSICAS] = {
-        "Feet Don't Fail Me Now": os.path.join(DIR_WAV, '1.mp3'),
-        "Wavin Flags": os.path.join(DIR_WAV, '2.mp3'),
-        "Miss Alissa": os.path.join(DIR_WAV, '3.mp3'),
-        "My Type": os.path.join(DIR_WAV, '4.mp3'),
-        "We Are One": os.path.join(DIR_WAV, '5.mp3'),
-    }
+    "Feet Don't Fail Me Now": {"path": os.path.join(DIR_WAV, '1.mp3'), "artist": "Joy Crookes"},
+    "Wavin Flags": {"path": os.path.join(DIR_WAV, '2.mp3'), "artist": "K'naan"},
+    "Miss Alissa": {"path": os.path.join(DIR_WAV, '3.mp3'), "artist": "Eagles of Death Metal"},
+    "My Type": {"path": os.path.join(DIR_WAV, '4.mp3'), "artist": "SAINT MOTEL"},
+    "We Are One": {"path": os.path.join(DIR_WAV, '5.mp3'), "artist": "Pitbull feat. Jennifer Lopez & Claudia Leitte"},
+}
 
     return assets

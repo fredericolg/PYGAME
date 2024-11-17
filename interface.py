@@ -178,7 +178,7 @@ while game:
         nome_musica = musica_info["name"]
         artista = musica_info["artist"]
 
-        menuCONFIG = CreateMenu(window, 636, 436)
+        menuCONFIG = CreateMenu(window, 816, 436)
         menuCONFIG.draw()
 
         font = assets[FONTE_PRINCIPAL]

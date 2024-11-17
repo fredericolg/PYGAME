@@ -15,3 +15,5 @@ def desenha_barra(window, progresso, posicao=(200, 450), tamanho=(800, 30), cor_
 
     # Desenha a borda da barra
     pygame.draw.rect(window, cor_borda, (x, y, width, height), 3)
+
+

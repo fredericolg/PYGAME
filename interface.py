@@ -69,6 +69,10 @@ botao_confirma = Botão(500, 385, 200, 200, assets[BOTAO_CONFIRM], 200, 200, ass
 seta_esq = Botão(240, 265, 150, 150, assets[SETA_BACK], 150, 150, assets[SETA_BACK2], ação = lambda: time_selector.navegar(-1))
 seta_dir = Botão(810, 265, 150, 150, assets[SETA_NEXT], 150, 150, assets[SETA_NEXT2], ação = lambda: time_selector.navegar(1))
 
+# Botões GAMEOVER
+botao_play_again = Botão((LARGURA/2) - 90, (ALTURA/2) + 15, 200, 100, assets[BOTAO_PLAY_AGAIN], 195, 95, assets[BOTAO_PLAY_AGAIN2], ação = lambda: muda_estado(SELECT))
+botao_quit = Botão((LARGURA/2) - 90, (ALTURA/2) + 110, 200, 185, assets[BOTAO_QUIT], 195, 180, assets[BOTAO_QUIT2], ação = lambda: muda_estado(QUIT))
+
 lista_times = list(assets[TIMES].keys())  # Lista de nomes dos times
 tamanho_escudo = (250, 250)  # Define o tamanho global dos escudos
 time_selector = TimeSelector(lista_times, assets, tamanho_escudo)
@@ -80,11 +84,14 @@ msg_start = None
 msg_end = 1000
 
 # ========== Parâmetros para o jogo ===========
+game_over = False
 escolhas_gol = ["Esquerda Superior", "Esquerda Inferior", "Direita Superior", "Direita Inferior"]
+rodadas = 0
 rodadas_max = 5
 msg_gol_duracao = 3000 
 msg_gol = ""
 pontuacao_jog = 0
+pontuacao_gol = 0
 
 # ===== Loop principal =====
 while game:

@@ -223,6 +223,12 @@ while game:
     
     
     if state == SELECT:
+
+        pontuacao_jog = 0
+        pontuacao_gol = 0
+        rodadas = 0
+        game_over = False
+
         window.blit(imagem_fundo, (0, 0))
 
         mouse_pos = pygame.mouse.get_pos()
@@ -419,7 +425,7 @@ while game:
         botao_play_again.draw(window)
         botao_quit.draw(window)
 
-        
+
         # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências

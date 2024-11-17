@@ -61,7 +61,17 @@ botao_config = Botão((LARGURA/2) - 90, (ALTURA/2) + 110, 200, 185, assets[BOTAO
 botao_pause = Botão((LARGURA/2) - 35, (ALTURA/2) + 20, 50, 50, assets[MUSICA_STOP], 50, 50, assets[MUSICA_STOP], ação = lambda: music_controller.pause_music())
 botao_back = Botão((LARGURA/2) - 100, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_BACK], 50, 50, assets[MUSICA_BACK], ação = lambda: music_controller.previous_music())
 botao_next = Botão((LARGURA/2) + 35, (ALTURA * 1/2) + 25, 50, 50, assets[MUSICA_NEXT], 50, 50, assets[MUSICA_NEXT], ação = lambda: music_controller.next_music())
-botao_volta = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
+botao_volta1 = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
+
+# Botões SELECT
+botao_volta2 = Botão(0, 0, 65, 65, assets[SETA_BACK], 65, 65, assets[SETA_BACK2], ação = lambda: muda_estado(INIT))
+botao_confirma = Botão(500, 385, 200, 200, assets[BOTAO_CONFIRM], 200, 200, assets[BOTAO_CONFIRM2], ação = lambda: muda_estado(PLAY))
+seta_esq = Botão(240, 265, 150, 150, assets[SETA_BACK], 150, 150, assets[SETA_BACK2], ação = lambda: time_selector.navegar(-1))
+seta_dir = Botão(810, 265, 150, 150, assets[SETA_NEXT], 150, 150, assets[SETA_NEXT2], ação = lambda: time_selector.navegar(1))
+
+lista_times = list(assets[TIMES].keys())  # Lista de nomes dos times
+tamanho_escudo = (250, 250)  # Define o tamanho global dos escudos
+time_selector = TimeSelector(lista_times, assets, tamanho_escudo)
 
 LOAD_start = None
 LOAD_end = 4000  # Tempo total do carregamento (6 segundos)
@@ -204,7 +214,14 @@ while game:
     
     
     if state == SELECT:
-        
+        window.blit(imagem_fundo, (0, 0))
+
+        mouse_pos = pygame.mouse.get_pos()
+        botao_volta2.check_hover(mouse_pos)
+        seta_esq.check_hover(mouse_pos)
+        seta_dir.check_hover(mouse_pos)
+        botao_confirma.check_hover(mouse_pos)
+
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:

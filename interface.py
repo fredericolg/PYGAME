@@ -69,13 +69,20 @@ botao_confirma = Botão(500, 385, 200, 200, assets[BOTAO_CONFIRM], 200, 200, ass
 seta_esq = Botão(240, 265, 150, 150, assets[SETA_BACK], 150, 150, assets[SETA_BACK2], ação = lambda: time_selector.navegar(-1))
 seta_dir = Botão(810, 265, 150, 150, assets[SETA_NEXT], 150, 150, assets[SETA_NEXT2], ação = lambda: time_selector.navegar(1))
 
+# Botões Play
+bola_top1 = Botão(336, 165, 100, 100, assets[BOLA_CHUTE], 100, 100, assets[BOLA2], ação = lambda: JogoP.define_chute("Esquerda Superior"))
+bola_top2 = Botão(764, 165, 100, 100, assets[BOLA_CHUTE], 100, 100, assets[BOLA2], ação = lambda: JogoP.define_chute("Direita Superior"))
+bola_baixo1 = Botão(336, 392, 100, 100, assets[BOLA_CHUTE], 100, 100, assets[BOLA2], ação = lambda: JogoP.define_chute("Esquerda Inferior"))
+bola_baixo2 = Botão(764, 392, 100, 100, assets[BOLA_CHUTE], 100, 100, assets[BOLA2], ação = lambda: JogoP.define_chute("Direita Inferior"))
+
 # Botões GAMEOVER
-botao_play_again = Botão((LARGURA/2) - 90, (ALTURA/2) + 15, 200, 100, assets[BOTAO_PLAY_AGAIN], 195, 95, assets[BOTAO_PLAY_AGAIN2], ação = lambda: muda_estado(SELECT))
-botao_quit = Botão((LARGURA/2) - 90, (ALTURA/2) + 110, 200, 185, assets[BOTAO_QUIT], 195, 180, assets[BOTAO_QUIT2], ação = lambda: muda_estado(QUIT))
+botao_play_again = Botão(220, (ALTURA/2) - 10, 400, 300, assets[BOTAO_PLAY_AGAIN], 400, 300, assets[BOTAO_PLAY_AGAIN2], ação = lambda: muda_estado(SELECT))
+botao_quit = Botão(600, (ALTURA/2) - 50, 400, 385, assets[BOTAO_QUIT], 415, 395, assets[BOTAO_QUIT2], ação = lambda: muda_estado(QUIT))
 
 lista_times = list(assets[TIMES].keys())  # Lista de nomes dos times
 tamanho_escudo = (250, 250)  # Define o tamanho global dos escudos
 time_selector = TimeSelector(lista_times, assets, tamanho_escudo)
+JogoP = JogoPLAY()
 
 LOAD_start = None
 LOAD_end = 4000  # Tempo total do carregamento (6 segundos)
@@ -88,7 +95,7 @@ game_over = False
 escolhas_gol = ["Esquerda Superior", "Esquerda Inferior", "Direita Superior", "Direita Inferior"]
 rodadas = 0
 rodadas_max = 5
-msg_gol_duracao = 3000 
+msg_gol_duracao = 1000 
 msg_gol = ""
 pontuacao_jog = 0
 pontuacao_gol = 0
@@ -188,9 +195,8 @@ while game:
         menuCONFIG = CreateMenu(window, 816, 436)
         menuCONFIG.draw()
 
-        font = assets[FONTE_PRINCIPAL]
-        nome_musica_text = font.render(nome_musica, True, PRETO)
-        artista_text = font.render(artista, True, PRETO)
+        nome_musica_text = assets[FONTE_PRINCIPAL].render(nome_musica, True, PRETO)
+        artista_text = assets[FONTE_PRINCIPAL].render(artista, True, PRETO)
 
         # Centraliza e exibe os textos
         nome_musica_rect = nome_musica_text.get_rect(center=(LARGURA // 2, ALTURA // 2 - 50))
@@ -224,10 +230,6 @@ while game:
     
     if state == SELECT:
 
-        pontuacao_jog = 0
-        pontuacao_gol = 0
-        rodadas = 0
-        game_over = False
 
         window.blit(imagem_fundo, (0, 0))
 
@@ -269,52 +271,26 @@ while game:
         # Define a sigla com segurança
         sigla = siglas_times.get(time_select, "N/A")
 
-    if state == PLAY:
+    if state == PLAY:    
         fundo_gol = pygame.transform.scale(imagem_gol, (LARGURA, ALTURA))
         window.blit(fundo_gol,(0, 0))
+
+        mouse_pos = pygame.mouse.get_pos()
+        bola_top1.check_hover(mouse_pos)
+        bola_top2.check_hover(mouse_pos)
+        bola_baixo1.check_hover(mouse_pos)
+        bola_baixo2.check_hover(mouse_pos)
+
+        # Desenha os botões
+        bola_top1.draw(window)
+        bola_top2.draw(window)
+        bola_baixo1.draw(window)
+        bola_baixo2.draw(window)
+
+        Draw.imagem(window, assets[GOLEIRO], (LARGURA/2, ALTURA/2 + 70), (400, 400))
+        Draw.imagem(window, assets[BOLA], (LARGURA/2 + 5, ALTURA/2 + 250), (100, 100))
+
         pos_mouse = pygame.mouse.get_pos()
-
-        larg = 170
-        alt = 106
-
-        # == Define canto superior esquerdo
-        x_1 = 340
-        y_1 = 170
-        canto_1 = pygame.Rect(x_1, y_1, larg, alt)
-        bola_chute = pygame.transform.scale(bola_chute, (100, 100))
-        window.blit(bola_chute, (x_1,y_1))
-
-        # == Define canto superior direito
-        x_2 = 690
-        y_2 = 170
-        canto_2 = pygame.Rect(x_2, y_2, larg, alt)
-        bola_chute = pygame.transform.scale(bola_chute, (100, 100))
-        window.blit(bola_chute, (x_2+70,y_2))
-
-        # == Define canto inferior esquerdo
-        x_3 = 340
-        y_3 = 382
-        canto_3 = pygame.Rect(x_3, y_3, larg, alt)
-        bola_chute = pygame.transform.scale(bola_chute, (100, 100))
-        window.blit(bola_chute, (x_3,y_3))
-
-        # == Define canto inferior direito
-        x_4 = 690
-        y_4 = 382
-        canto_4 = pygame.Rect(x_4, y_4, larg, alt)
-        bola_chute = pygame.transform.scale(bola_chute, (100, 100))
-        window.blit(bola_chute, (x_4+70,y_4))
-
-        imagem_goleiro = pygame.transform.scale(assets[GOLEIRO], (400, 400))
-        imagem_goleiro_rect = imagem_goleiro.get_rect()
-        imagem_goleiro_rect.center = (LARGURA/2, ALTURA/2 + 70)
-        window.blit(imagem_goleiro, (imagem_goleiro_rect))
-
-        imagem_bola = pygame.transform.scale(assets[BOLA], (100, 100))
-        imagem_bola_rect = imagem_bola.get_rect()
-        imagem_bola_rect.center = (LARGURA/2, ALTURA/2 + 250)
-        window.blit(imagem_bola, (imagem_bola_rect))
-
 
         tempo = pygame.time.get_ticks()
 
@@ -323,66 +299,39 @@ while game:
             if event.type == pygame.QUIT:
                 game = False
             if not game_over and not msg_gol and event.type == pygame.MOUSEBUTTONDOWN:
-                pos_bola = None
-                if canto_1.collidepoint(pos_mouse):
-                    pos_bola = "Esquerda Superior"
-                if canto_2.collidepoint(pos_mouse):
-                    pos_bola = "Direita Superior"
-                if canto_3.collidepoint(pos_mouse):
-                    pos_bola = "Esquerda Inferior"
-                if canto_4.collidepoint(pos_mouse):
-                    pos_bola = "Direita Inferior"
+                bola_top1.handle_event(event)
+                bola_top2.handle_event(event)
+                bola_baixo1.handle_event(event)
+                bola_baixo2.handle_event(event)
 
+                canto_gol = random.choice(escolhas_gol)
 
-                if pos_bola:
-                    pos_gol = random.choice(escolhas_gol)
+                msg_gol = JogoP.processar_jogada(canto_gol)
 
-                    if pos_bola != pos_gol:
-                        pontuacao_jog += 1
-                        msg_gol = "GOOOOOOOOOOOOOOOOL!!"
+                msg_gol_inicia = tempo
 
-                    else:
-                        pontuacao_gol += 1
-                        msg_gol = "DEFEEEEEEEEEEEEESA!!"
-                    
-                    msg_gol_inicia = tempo
+                rodadas += 1
 
-                    rodadas += 1
-
-                    if rodadas == rodadas_max:
-                        game_over = True
+                if rodadas == rodadas_max:
+                    game_over = True
         
 
-
-        cor = AZUL
-        LARGURA_pla = (150)
-        ALTURA_pla = (85)
-        tamanho_pla = (LARGURA_pla, ALTURA_pla)
-        posicao_pla = (10, 10)
-        placar = pygame.draw.rect(window, cor, (posicao_pla, tamanho_pla))
-        font = pygame.font.Font("fonte/Minecraft.ttf", 36)
-        render_pont_jog = font.render(f'{sigla}: {pontuacao_jog}', True, (255,255,255))
-        render_pont_gol = font.render(f'GOL: {pontuacao_gol}', True, (255,255,255) )
-        window.blit(render_pont_jog, (20, 20))
-        window.blit(render_pont_gol, (20, 60))
-
-
-
-
+        Draw.retangulo(window, AZUL, (10, 10), (150, 85), 0)
+        Draw.texto(window, f'{sigla}:', (20, 20), assets[FONTE_PEQUENA], BRANCO)
+        Draw.texto(window, f'{JogoP.pontuacao_jog}', (125, 20), assets[FONTE_PEQUENA], BRANCO)
+        Draw.texto(window, f'GOL:', (20, 60), assets[FONTE_PEQUENA], BRANCO)
+        Draw.texto(window, f'{JogoP.pontuacao_gol}', (125, 60), assets[FONTE_PEQUENA], BRANCO)
+        
         if msg_gol:
             if msg_gol == "GOOOOOOOOOOOOOOOOL!!":
-                font = pygame.font.Font("fonte/Minecraft.ttf", 48)
-                render_msg_gol = font.render(msg_gol, True, (0,0,0))
-                window.blit(render_msg_gol, (270, 75))
+                    Draw.texto(window, msg_gol, (270, 75), assets[FONTE_PRINCIPAL], PRETO)
 
-                if tempo - msg_gol_inicia  >= msg_gol_duracao:
-                    msg_gol = ""  
-                    if game_over:
-                        state = GAMEOVER
+                    if tempo - msg_gol_inicia  >= msg_gol_duracao:
+                        msg_gol = ""  
+                        if game_over:
+                            state = GAMEOVER
             else:
-                font = pygame.font.Font("fonte/Minecraft.ttf", 48)
-                render_msg_gol = font.render(msg_gol, True, (0,0,0))
-                window.blit(render_msg_gol, (300, 75))
+                Draw.texto(window, msg_gol, (300, 75), assets[FONTE_PRINCIPAL], PRETO)
 
                 if tempo - msg_gol_inicia  >= msg_gol_duracao:
                     msg_gol = ""  
@@ -396,23 +345,14 @@ while game:
         menuGAMEOVER.draw()
 
 
-        if pontuacao_jog > pontuacao_gol:
-            font = pygame.font.Font("fonte/Minecraft.ttf", 100)
-            font2 = pygame.font.Font("fonte/Minecraft.ttf", 48)
-
-            render_ganhador = font.render('Voce Venceu!', True, (0,0,0))
-            render_plafin = font2.render(f'Placar final: {sigla}: {pontuacao_jog} | GOL: {pontuacao_gol}', True, (0,0,0))
-            window.blit(render_ganhador, (290, 130))
-            window.blit(render_plafin, (285, 220))
+        if JogoP.pontuacao_jog > JogoP.pontuacao_gol:
+            Draw.texto(window, "Bela Conquista!", (245, 130), assets[FONTE_GRANDE], PRETO)
+            Draw.texto(window, (f"Placar Final: {sigla}: {JogoP.pontuacao_jog} | GOL: {JogoP.pontuacao_gol}"), (375, 280), assets[FONTE_PEQUENA], PRETO)
 
         else:
-            font = pygame.font.Font("fonte/Minecraft.ttf", 100)
-            font2 = pygame.font.Font("fonte/Minecraft.ttf", 48)
+            Draw.texto(window, "HA, Perninha...", (245, 130), assets[FONTE_GRANDE], PRETO)
+            Draw.texto(window, (f"Placar Final: {sigla}: {JogoP.pontuacao_jog} | GOL: {JogoP.pontuacao_gol}"), (375, 280), assets[FONTE_PEQUENA], PRETO)
 
-            render_ganhador = font.render('Voce Perdeu!', True, (0,0,0))
-            render_plafin = font2.render(f'Placar final: {sigla}: {pontuacao_jog} | GOL: {pontuacao_gol}', True, (0,0,0))
-            window.blit(render_ganhador, (290, 130))
-            window.blit(render_plafin, (285, 220))
 
         # Obtém a posição do mouse para verificar hover
         mouse_pos = pygame.mouse.get_pos()

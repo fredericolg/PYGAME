@@ -17,6 +17,7 @@ BOTAO_CONFIRM = 'botao_confirma'
 BOTAO_CONFIRM2 = 'botao_confirma_mouse'
 GOLEIRO = "imagem_goleiro"
 BOLA = "imagem_bola"
+BOLA2 = "imagem_bola2"
 
 BOTAO_PLAY_AGAIN = 'botao_play_again'
 BOTAO_PLAY_AGAIN2 = 'botao_play_again_mouse'
@@ -36,6 +37,8 @@ MUSICA_BACK = 'volta_musica'
 TIMES = 'times'
 MUSICAS = 'lista_musicas'
 FONTE_PRINCIPAL = 'fonte_principal'
+FONTE_PEQUENA = "Fsmall"
+FONTE_GRANDE = "Fbig"
 
 def load_assets():
     assets = {}
@@ -56,6 +59,7 @@ def load_assets():
     assets[GOLEIRO] = pygame.image.load(os.path.join(DIR_IMG, 'goleiro pixelado.png')).convert_alpha()
 
     assets[BOLA] = pygame.image.load(os.path.join(DIR_IMG, 'bola fut.png')).convert_alpha()
+    assets[BOLA2] = pygame.image.load(os.path.join(DIR_IMG, 'Football_White_Filled.png')).convert_alpha()
 
     assets[BOTAO_PLAY_AGAIN] = pygame.image.load(os.path.join(DIR_IMG, 'botao play again.png')).convert_alpha()
     assets[BOTAO_PLAY_AGAIN2] = pygame.image.load(os.path.join(DIR_IMG, 'botao play again cor.png')).convert_alpha()
@@ -80,6 +84,8 @@ def load_assets():
     }
 
     assets[FONTE_PRINCIPAL] = pygame.font.Font(os.path.join(DIR_FNT, 'Minecraft.ttf'), 48)
+    assets[FONTE_PEQUENA] = pygame.font.Font(os.path.join(DIR_FNT, 'Minecraft.ttf'), 36)
+    assets[FONTE_GRANDE] = pygame.font.Font(os.path.join(DIR_FNT, 'Minecraft.ttf'), 100)
 
     assets[MUSICAS] = {
     "Feet Don't Fail Me Now": {"path": os.path.join(DIR_WAV, '1.mp3'), "artist": "Joy Crookes"},

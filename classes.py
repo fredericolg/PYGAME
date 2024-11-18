@@ -155,3 +155,40 @@ class TimeSelector:
 
     def acha_ultimo(self):
         return self.nome_time
+    
+class JogoPLAY:
+    def __init__(self):
+        self.pos_bola = None  # Estado do chute
+        self.pontuacao_gol = 0
+        self.pontuacao_jog = 0
+
+    def define_chute(self, canto):
+        self.pos_bola = canto
+
+    def processar_jogada(self, pos_gol):
+        if self.pos_bola == pos_gol:
+            self.pontuacao_gol += 1
+            return "DEFEEEEEEEEEEEEESA!!"
+        else:
+            self.pontuacao_jog += 1
+            return "GOOOOOOOOOOOOOOOOL!!"
+        
+class Draw:
+    
+    def imagem(window, imagem, posicao, tamanho=None):
+        if tamanho:
+            imagem = pygame.transform.scale(imagem, tamanho)  # Redimensiona a imagem
+        rect = imagem.get_rect()
+        rect.center = posicao
+        window.blit(imagem, rect)
+
+    
+    def retangulo(window, cor, posicao, tamanho, largura_borda=0):
+        rect = pygame.Rect(*posicao, *tamanho)
+        pygame.draw.rect(window, cor, rect, width=largura_borda)
+
+    
+    def texto(window, texto, posicao, fonte, cor):
+        render = fonte.render(texto, True, cor)
+        window.blit(render, posicao)
+    

@@ -19,21 +19,6 @@ music_controller = MusicController(assets[MUSICAS])
 music_controller.set_global_volume(0.8)
 music_controller.set_individual_volume("Feet Don't Fail Me Now", 1)
 
-
-imagem_seta = assets[SETA_BACK]
-imagem_seta_mouse = assets[SETA_BACK2]
-imagem_seta_prox = assets[SETA_NEXT]
-imagem_seta_prox_cor = assets[SETA_NEXT2]
-botao_confirma = assets[BOTAO_CONFIRM]
-botao_confirma_cor = assets[BOTAO_CONFIRM2]
-logo_sp = pygame.image.load("imagens/logo sao paulo.png").convert_alpha()
-logo_flu = pygame.image.load("imagens/logo fluminense png.png").convert_alpha()
-logo_borussia = pygame.image.load("imagens/logo borussia png.png").convert_alpha()
-logo_inter = pygame.image.load("imagens/logo inter miami png.png").convert_alpha()
-imagem_gol = assets[FUNDO_GOL]
-bola_chute = assets[BOLA_CHUTE]
-
-
 game = True
 # === tempo de primeira tela (tela de carregamento)
 state = LOAD

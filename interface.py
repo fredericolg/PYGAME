@@ -254,7 +254,7 @@ while game:
         sigla = siglas_times.get(time_select, "N/A")
 
     if state == PLAY:
-        fundo_gol = pygame.transform.scale(imagem_gol, (LARGURA, ALTURA))
+        fundo_gol = pygame.transform.scale(assets[FUNDO_GOL], (LARGURA, ALTURA))
         window.blit(fundo_gol,(0, 0))
 
         mouse_pos = pygame.mouse.get_pos()

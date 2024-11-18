@@ -32,3 +32,7 @@ def atualiza_time(direcao, lista_times, assets, indice_atual):
 
     # Retorna o novo índice, o nome e o escudo
     return novo_indice, nome_time, escudo_time
+
+def muda_estado(novo_estado):
+    global state
+    state = novo_estado

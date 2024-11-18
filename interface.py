@@ -90,8 +90,8 @@ msg_gol_duracao = 1000
 msg_gol = ""
 pontuacao_jog = 0
 pontuacao_gol = 0
-rodadas = 0
 game_over = ""
+
 
 # ===== Loop principal =====
 while game:
@@ -213,6 +213,12 @@ while game:
     
     
     if state == SELECT:
+
+        pontuacao_jog = 0
+        pontuacao_gol = 0
+        rodadas = 0
+        game_over = False
+
         window.blit(imagem_fundo, (0, 0))
 
         mouse_pos = pygame.mouse.get_pos()

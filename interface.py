@@ -136,18 +136,14 @@ while game:
         # ==== fica 6 segundos na tela de carregamento
 
         # imprime o logo no tela
-        imagem_logo = pygame.transform.scale(assets[LOGO], (400, 400))
-        imagem_logo_rect = imagem_logo.get_rect(center=(LARGURA / 2, ALTURA / 2 - 50))
-        window.blit(imagem_logo, imagem_logo_rect)
+        Draw.imagem(window, assets[LOGO], (LARGURA / 2, ALTURA / 2 - 50), (400, 400))
 
         if progresso >= 1:  # Quando o carregamento está completo
             if msg_start is None:  # Inicializa o início da mensagem
                 msg_start = pygame.time.get_ticks()
             
             # Exibe a mensagem
-            hora_do_gol = assets[FONTE_PRINCIPAL].render('ESTA NA HORA DE FAZER GOL!!!', False, PRETO)
-            hora_do_gol_rect = hora_do_gol.get_rect(center=(LARGURA / 2, 520))
-            window.blit(hora_do_gol, hora_do_gol_rect)
+            Draw.texto(window, 'ESTA NA HORA DE FAZER GOL!!!', (200, 500), assets[FONTE_PRINCIPAL], PRETO)
 
             # Verifica se o tempo de exibição da mensagem passou
             if pygame.time.get_ticks() - msg_start >= msg_end:
@@ -174,10 +170,7 @@ while game:
         botao_config.draw(window)
 
         # coloca o escrito "PENALTY SHOOT OUT" na tela
-        imagem_escrito = pygame.transform.scale(assets[LOGO_2], (500, 500))
-        imagem_escrito_rect=imagem_escrito.get_rect()
-        imagem_escrito_rect.center=((LARGURA/2),(ALTURA/2)-150)
-        window.blit(imagem_escrito, (imagem_escrito_rect))
+        Draw.imagem(window, assets[LOGO_2], ((LARGURA/2),(ALTURA/2)-150), (500, 500))
 
         # ----- Trata eventos
         for event in pygame.event.get():
@@ -235,8 +228,6 @@ while game:
     
     
     if state == SELECT:
-
-
         window.blit(imagem_fundo, (0, 0))
 
         mouse_pos = pygame.mouse.get_pos()

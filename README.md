@@ -25,3 +25,5 @@ Instruções Para Rodar O Jogo:
 7. Espero que você tenha ganho... mas não se preocupe, se quiser tentar de novo, é só clicar no botão "PLAY AGAIN" exibido na sua tela!
 8. Claro, se o desafio for demais para você... é so tentar de novo outro dia! Clique no botão "QUIT" exibido na sua tela, ou no feche a tela do aplicatiivo para deixar o jogo a qualquer momento!
 9. Muito obrigado pela participação, espero que você tenha gostado! Até Mais!
+
+Vídeo: https://youtu.be/jDkQQomE8CE
